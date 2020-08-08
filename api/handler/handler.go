@@ -3,12 +3,15 @@ package handler
 import (
     "net/http"
     "github.com/labstack/echo"
+    "time"
     . "../controller"
 )
 
 type Question struct {
     Id int `json:"id" gorm:"primary_key;AUTO_INCREMENT"`
     Text string `json:"text"`
+    CreatedAt time.Time
+    UpdatedAt time.Time
 }
 
 func GetAllQuestions(c echo.Context) error {
@@ -40,7 +43,6 @@ func CreateQuestion(c echo.Context) error {
     defer db.Close()
     db.AutoMigrate(&Question{})
 
-    // question := new(Question)
     question := new(Question)
     if err := c.Bind(question); err != nil {
         return err
@@ -66,7 +68,6 @@ func UpdateQuestion(c echo.Context) error {
     } else {
         return c.JSON(http.StatusNotFound, nil)
     }
-
 }
 
 func DeleteQuestion(c echo.Context) error {

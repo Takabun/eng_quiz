@@ -16,13 +16,10 @@ func main() {
 }
 
 func initRouting(e *echo.Echo) {
-	// e.GET("/high_school/testcrate", handler.CreateMember)  //ユーザー作成
-  // e.GET("/high_school/:name", handler.GetMember)
-  // e.GET("/high_school/all", handler.GetAllMembers)
-  e.GET("/posts", handler.GetAllQuestions)
-  e.GET("/posts/:id", handler.GetQuestion)
-  e.POST("/posts", handler.CreateQuestion)
-  e.PUT("/posts/:id", handler.UpdateQuestion)
-  e.DELETE("/posts/:id", handler.DeleteQuestion)
+  e.GET("/questions", handler.GetAllQuestions)
+  e.GET("/question/:id", handler.GetQuestion)
+  e.POST("/question", handler.CreateQuestion)
+  e.PUT("/question/:id", handler.UpdateQuestion)
+  e.DELETE("/question/:id", handler.DeleteQuestion)
   e.Start(":1323")
 }
