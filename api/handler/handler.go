@@ -3,16 +3,31 @@ package handler
 import (
     "net/http"
     "github.com/labstack/echo"
+    "github.com/jinzhu/gorm"
     "time"
     . "../controller"
 )
 
-type Question struct {
-    Id int `json:"id" gorm:"primary_key;AUTO_INCREMENT"`
-    Text string `json:"text"`
-    CreatedAt time.Time
-    UpdatedAt time.Time
+type Model struct {
+  ID        uint `gorm:"primary_key"`
+  CreatedAt time.Time
+  UpdatedAt time.Time
+  DeletedAt *time.Time
 }
+
+type Question struct {
+    gorm.Model
+    Text string `json:"text"`
+    CreatorId int `json:"creator_id"`
+}
+
+type User struct {
+    gorm.Model
+    Name string `json:"name"`
+    Email string `json:"email"`
+    Password string `json:"password"`
+}
+
 
 func GetAllQuestions(c echo.Context) error {
     db := OpenSQLiteConnection()
@@ -31,7 +46,7 @@ func GetQuestion(c echo.Context) error {
 
     if id := c.Param("id"); id != "" {
         var question Question
-        db.First(&question)
+        db.First(&question, id)
         return c.JSON(http.StatusOK, question)
     } else {
         return c.JSON(http.StatusNotFound, nil)
@@ -44,6 +59,7 @@ func CreateQuestion(c echo.Context) error {
     db.AutoMigrate(&Question{})
 
     question := new(Question)
+    // question := new(Question{text:"さああ", creator_d: 1})
     if err := c.Bind(question); err != nil {
         return err
     }
