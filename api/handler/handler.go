@@ -31,7 +31,7 @@ func GetQuestion(c echo.Context) error {
 
     if id := c.Param("id"); id != "" {
         var question Question
-        db.First(&question, id)
+        db.First(&question)
         return c.JSON(http.StatusOK, question)
     } else {
         return c.JSON(http.StatusNotFound, nil)
