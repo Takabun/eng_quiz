@@ -15,17 +15,26 @@ type Model struct {
   DeletedAt *time.Time
 }
 
+
 type Question struct {
     gorm.Model
-    Text string `json:"text"`
-    CreatorId int `json:"creator_id"`
+    Text string 
+    UserID int   // 元はCreatorId  // ;gorm:"foreignkey:ID"
+    User User  `gorm:"foreignkey:UserID"` // `gorm:"ForeignKey:UserID;AssociationForeignKey:ID"`
 }
+
 
 type User struct {
     gorm.Model
-    Name string `json:"name"`
-    Email string `json:"email"`
-    Password string `json:"password"`
+    Name string   // `json:"name"`
+    Email string  // `json:"email"`
+    Password string   // `json:"password"`
+    Question []Question  // []Questionとすると動いた！！
+}
+
+type Tag struct {
+    gorm.Model
+    Name string
 }
 
 
@@ -39,6 +48,16 @@ func GetAllQuestions(c echo.Context) error {
     return c.JSON(http.StatusOK, questions)
 }
 
+func GetAllUsers(c echo.Context) error {
+    db := OpenSQLiteConnection()
+    defer db.Close()
+    db.AutoMigrate(&User{})
+
+    var users []User
+    db.Find(&users)
+    return c.JSON(http.StatusOK, users)
+}
+
 func GetQuestion(c echo.Context) error {
     db := OpenSQLiteConnection()
     defer db.Close()
@@ -46,8 +65,8 @@ func GetQuestion(c echo.Context) error {
 
     if id := c.Param("id"); id != "" {
         var question Question
-        db.First(&question, id)
-        return c.JSON(http.StatusOK, question)
+        db.First(&question, id).Related(&question.User)
+        return c.JSON(http.StatusOK, question) 
     } else {
         return c.JSON(http.StatusNotFound, nil)
     }

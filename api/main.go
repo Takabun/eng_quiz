@@ -21,5 +21,9 @@ func initRouting(e *echo.Echo) {
   e.POST("/question", handler.CreateQuestion)
   e.PUT("/question/:id", handler.UpdateQuestion)
   e.DELETE("/question/:id", handler.DeleteQuestion)
+
+  e.GET("/users", handler.GetAllUsers)
+
+  
   e.Start(":1323")
 }
