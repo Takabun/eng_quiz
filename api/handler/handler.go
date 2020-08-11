@@ -10,8 +10,8 @@ import (
 
 type Model struct {
   ID        uint `gorm:"primary_key"`
-  CreatedAt time.Time
-  UpdatedAt time.Time
+  CreatedAt *time.Time
+  UpdatedAt *time.Time
   DeletedAt *time.Time
 }
 
@@ -19,22 +19,40 @@ type Model struct {
 type Question struct {
     gorm.Model
     Text string 
-    UserID int   // 元はCreatorId  // ;gorm:"foreignkey:ID"
-    User User  `gorm:"foreignkey:UserID"` // `gorm:"ForeignKey:UserID;AssociationForeignKey:ID"`
+    UserID int
+    User User  // `gorm:"foreignkey:UserID"`なくてもイケる
+    Tags []*Tag  `gorm:"many2many:question_tags;"`
+    Answer Answer
+    Comments []Comment
 }
 
+type Answer struct {
+    gorm.Model
+    Text string
+    QuestionID int
+    // Question Question  //不要。(指定のQuestionのページにしか現れないと分かっているので)
+}
 
 type User struct {
     gorm.Model
-    Name string   // `json:"name"`
-    Email string  // `json:"email"`
-    Password string   // `json:"password"`
-    Question []Question  // []Questionとすると動いた！！
+    Name string
+    Email string
+    Password string
+    Questions []Question  //[]Questionとすると(スライス)動く
 }
 
 type Tag struct {
     gorm.Model
     Name string
+    Questions []*Question  `gorm:"many2many:question_tags;"`
+}
+
+type Comment struct {
+    gorm.Model
+    Text string
+    QuestionID int //実際はたぶん使わない
+    UserID int
+    User User // 動作しない`gorm:"foreignkey:UserID"`
 }
 
 
@@ -48,16 +66,6 @@ func GetAllQuestions(c echo.Context) error {
     return c.JSON(http.StatusOK, questions)
 }
 
-func GetAllUsers(c echo.Context) error {
-    db := OpenSQLiteConnection()
-    defer db.Close()
-    db.AutoMigrate(&User{})
-
-    var users []User
-    db.Find(&users)
-    return c.JSON(http.StatusOK, users)
-}
-
 func GetQuestion(c echo.Context) error {
     db := OpenSQLiteConnection()
     defer db.Close()
@@ -65,7 +73,7 @@ func GetQuestion(c echo.Context) error {
 
     if id := c.Param("id"); id != "" {
         var question Question
-        db.First(&question, id).Related(&question.User)
+        db.First(&question, id).Related(&question.User).Related(&question.Answer).Related(&question.Comments).Related(&question.Tags, "Tags")
         return c.JSON(http.StatusOK, question) 
     } else {
         return c.JSON(http.StatusNotFound, nil)
@@ -114,6 +122,63 @@ func DeleteQuestion(c echo.Context) error {
         db.First(&question, id)
         db.Delete(question)
         return c.JSON(http.StatusOK, question)
+    } else {
+        return c.JSON(http.StatusNotFound, nil)
+    }
+}
+
+
+//  Users
+func GetAllUsers(c echo.Context) error {
+    db := OpenSQLiteConnection()
+    defer db.Close()
+    db.AutoMigrate(&User{})
+
+    var users []User
+    db.Find(&users)
+    return c.JSON(http.StatusOK, users)
+}
+
+// 個別のAnswer(:idはAnswerのIDではなくQuestionのID)
+func GetAnswer(c echo.Context) error {
+    db := OpenSQLiteConnection()
+    defer db.Close()
+    db.AutoMigrate(&Answer{})
+
+    if id := c.Param("id"); id != "" {
+        var answer Answer
+        db.Where("question_id = ?", id).First(&answer)
+        return c.JSON(http.StatusOK, answer)
+    } else {
+        return c.JSON(http.StatusNotFound, nil)
+    }
+}
+
+
+// 個別のComment(:idはCommentのIDではなくQuestionのID)
+func GetComment(c echo.Context) error {
+    db := OpenSQLiteConnection()
+    defer db.Close()
+    db.AutoMigrate(&Comment{})
+
+    if id := c.Param("id"); id != "" {
+
+        // ①こうすればUserは取ってこれるが、
+        // var comment Comment
+        // db.Find(&comment).Related(&comment.User).Where("question_id = ?", id)  
+
+        // ②
+        var comments []Comment      // Commentは複数あるので[]
+        db.Find(&comments).Where("question_id = ?", id)
+
+        // ③
+        // Q:FindをModelにしたらどうなる
+
+        
+        // ④全て諦めてJOINで
+        // db.Table("users").Select("users.name, emails.email").Joins("left join emails on emails.user_id = users.id").Scan(&results)
+
+        return c.JSON(http.StatusOK, comments)
     } else {
         return c.JSON(http.StatusNotFound, nil)
     }

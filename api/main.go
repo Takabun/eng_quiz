@@ -12,7 +12,7 @@ func main() {
   e.Use(middleware.Logger())
   e.Use(middleware.Recover())
   // ルーティング
-  initRouting(e) 
+  initRouting(e)
 }
 
 func initRouting(e *echo.Echo) {
@@ -22,8 +22,13 @@ func initRouting(e *echo.Echo) {
   e.PUT("/question/:id", handler.UpdateQuestion)
   e.DELETE("/question/:id", handler.DeleteQuestion)
 
+
   e.GET("/users", handler.GetAllUsers)
 
-  
+
+  e.GET("/answer/:id", handler.GetAnswer)  // :idはAnswerのIDではなくQuestionのID
+  e.GET("/comment/:id", handler.GetComment)  // :idはAnswerのIDではなくQuestionのID
+
+
   e.Start(":1323")
 }
