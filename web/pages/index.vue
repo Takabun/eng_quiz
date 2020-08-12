@@ -69,6 +69,8 @@
             Nuxt GitHub
           </a>
         </v-card-text>
+        ケケケk
+        {{ this.name }}
         <v-card-actions>
           <v-spacer />
           <v-btn
@@ -87,11 +89,27 @@
 <script>
 import Logo from '~/components/Logo.vue'
 import VuetifyLogo from '~/components/VuetifyLogo.vue'
+import axios from 'axios'
 
 export default {
   components: {
     Logo,
     VuetifyLogo
+  },
+
+  data() {
+    return {
+      name
+    }
+  },
+
+  mounted() {
+    axios.get(`http://localhost:1323/questions`)
+      .then(res => {
+        console.log("axios結果！！", res)
+        this.name = res.data;
+        return 
+    })
   }
 }
 </script>

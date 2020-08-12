@@ -1,8 +1,8 @@
 package main
 
 import (
-  "github.com/labstack/echo"
   "github.com/labstack/echo/middleware"
+  "github.com/labstack/echo"
   "./handler"
 )
 
@@ -11,6 +11,9 @@ func main() {
   // ログなど
   e.Use(middleware.Logger())
   e.Use(middleware.Recover())
+
+  e.Use(middleware.CORS()) // CORS対策のはず
+
   // ルーティング
   initRouting(e)
 }
