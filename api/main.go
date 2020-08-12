@@ -36,10 +36,11 @@ func initRouting(e *echo.Echo) {
   e.GET("/mylist/:id", handler.GetMylistForUser)  // :idはMylistのIDではなくUserのID
   e.POST("/mylist", handler.CreateMylist)
   e.DELETE("/mylist/:id", handler.DeleteMylist)
-  
 
   e.GET("/answer/:id", handler.GetAnswer)  // :idはAnswerのIDではなくQuestionのID
-
+  e.POST("/answer", handler.CreateAnswer)
+  e.PUT("/answer/:id", handler.UpdateAnswer)
+  e.DELETE("/answer/:id", handler.DeleteAnswer)
 
   e.Start(":1323")
 }
