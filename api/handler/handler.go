@@ -74,7 +74,7 @@ func GetQuestion(c echo.Context) error {
     if id := c.Param("id"); id != "" {
         var question Question
         db.First(&question, id).Related(&question.User).Related(&question.Answer).Related(&question.Comments).Related(&question.Tags, "Tags")
-        return c.JSON(http.StatusOK, question) 
+        return c.JSON(http.StatusOK, question)
     } else {
         return c.JSON(http.StatusNotFound, nil)
     }
@@ -162,21 +162,12 @@ func GetComment(c echo.Context) error {
     db.AutoMigrate(&Comment{})
 
     if id := c.Param("id"); id != "" {
-
-        // ①こうすればUserは取ってこれるが、
-        // var comment Comment
-        // db.Find(&comment).Related(&comment.User).Where("question_id = ?", id)  
-
-        // ②
         var comments []Comment      // Commentは複数あるので[]
         db.Find(&comments).Where("question_id = ?", id)
 
-        // ③
-        // Q:FindをModelにしたらどうなる
-
-        
-        // ④全て諦めてJOINで
-        // db.Table("users").Select("users.name, emails.email").Joins("left join emails on emails.user_id = users.id").Scan(&results)
+        for i := range comments {
+            db.Model(comments[i]).Related(&comments[i].User) // 第二引数("Users")なくてもイケた
+        }
 
         return c.JSON(http.StatusOK, comments)
     } else {
