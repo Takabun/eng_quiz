@@ -65,3 +65,10 @@ type Comment struct {
 	User User // 動作しない`gorm:"foreignkey:UserID"`
 }
 
+type Mylist struct {
+	gorm.Model
+	UserID int
+	QuestionID int
+	User User
+	Question Question
+}

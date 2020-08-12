@@ -8,14 +8,10 @@ import (
 
 func main() {
   e := echo.New()
-  // ログなど
-  e.Use(middleware.Logger())
+  e.Use(middleware.Logger())  // ログ
   e.Use(middleware.Recover())
-
-  e.Use(middleware.CORS()) // CORS対策のはず
-
-  // ルーティング
-  initRouting(e)
+  e.Use(middleware.CORS()) // CORS対策
+  initRouting(e) // ルーティング
 }
 
 func initRouting(e *echo.Echo) {
@@ -26,10 +22,24 @@ func initRouting(e *echo.Echo) {
   e.DELETE("/question/:id", handler.DeleteQuestion)
 
   e.GET("/users", handler.GetAllUsers)
+  e.GET("/user/:id", handler.GetUser)
+  e.POST("/user", handler.CreateUser)
+  e.PUT("/user/:id", handler.UpdateUser)
+  e.DELETE("/user/:id", handler.DeleteUser)
+
+  e.GET("/comments", handler.GetAllComments)
+  e.GET("/comment/:id", handler.GetComment)  // :idはCommentのIDではなくQuestionのID
+  e.POST("/comment", handler.CreateComment)
+  e.PUT("/comment/:id", handler.UpdateComment)
+  e.DELETE("/comment/:id", handler.DeleteComment)
+
+  e.GET("/mylist/:id", handler.GetMylistForUser)  // :idはMylistのIDではなくUserのID
+  e.POST("/mylist", handler.CreateMylist)
+  e.DELETE("/mylist/:id", handler.DeleteMylist)
   
+
   e.GET("/answer/:id", handler.GetAnswer)  // :idはAnswerのIDではなくQuestionのID
 
-  e.GET("/comment/:id", handler.GetComment)  // :idはAnswerのIDではなくQuestionのID
 
   e.Start(":1323")
 }

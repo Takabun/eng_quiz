@@ -15,7 +15,7 @@ func GetAllQuestions(c echo.Context) error {
   var questions []Question
   db.Find(&questions)
   return c.JSON(http.StatusOK, questions)
-  }
+}
 
 func GetQuestion(c echo.Context) error {
   db := OpenSQLiteConnection()
@@ -23,11 +23,11 @@ func GetQuestion(c echo.Context) error {
   db.AutoMigrate(&Question{})
 
   if id := c.Param("id"); id != "" {
-      var question Question
-      db.First(&question, id).Related(&question.User).Related(&question.Tags, "Tags").Related(&question.QuestionImage) // .Related(&question.Answer).Related(&question.Comments)
-      return c.JSON(http.StatusOK, question)
+    var question Question
+    db.First(&question, id).Related(&question.User).Related(&question.Tags, "Tags").Related(&question.QuestionImage) // .Related(&question.Answer).Related(&question.Comments)
+    return c.JSON(http.StatusOK, question)
   } else {
-      return c.JSON(http.StatusNotFound, nil)
+    return c.JSON(http.StatusNotFound, nil)
   }
 }
 
@@ -37,9 +37,8 @@ func CreateQuestion(c echo.Context) error {
   db.AutoMigrate(&Question{})
 
   question := new(Question)
-  // question := new(Question{text:"さああ", creator_d: 1})
   if err := c.Bind(question); err != nil {
-      return err
+    return err
   }
   db.Create(&question)
 
@@ -52,15 +51,15 @@ func UpdateQuestion(c echo.Context) error {
 
   newQuestion := new(Question)
   if err := c.Bind(newQuestion); err != nil {
-      return err
+    return err
   }
 
   if id := c.Param("id"); id != "" {
-      var question Question
-      db.First(&question, id).Update(newQuestion)
-      return c.JSON(http.StatusOK, question)
+    var question Question
+    db.First(&question, id).Update(newQuestion)
+    return c.JSON(http.StatusOK, question)
   } else {
-      return c.JSON(http.StatusNotFound, nil)
+    return c.JSON(http.StatusNotFound, nil)
   }
 }
 
@@ -69,11 +68,11 @@ func DeleteQuestion(c echo.Context) error {
   defer db.Close()
 
   if id := c.Param("id"); id != "" {
-      var question Question
-      db.First(&question, id)
-      db.Delete(question)
-      return c.JSON(http.StatusOK, question)
+    var question Question
+    db.First(&question, id)
+    db.Delete(question)
+    return c.JSON(http.StatusOK, question)
   } else {
-      return c.JSON(http.StatusNotFound, nil)
+    return c.JSON(http.StatusNotFound, nil)
   }
 }
