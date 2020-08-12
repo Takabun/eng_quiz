@@ -24,9 +24,7 @@ func initRouting(e *echo.Echo) {
 
   e.GET("/users", handler.GetAllUsers)
   
-
   e.GET("/answer/:id", handler.GetAnswer)  // :idはAnswerのIDではなくQuestionのID
-
 
   e.GET("/comment/:id", handler.GetComment)  // :idはAnswerのIDではなくQuestionのID
 
