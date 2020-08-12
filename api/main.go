@@ -22,13 +22,13 @@ func initRouting(e *echo.Echo) {
   e.PUT("/question/:id", handler.UpdateQuestion)
   e.DELETE("/question/:id", handler.DeleteQuestion)
 
-
   e.GET("/users", handler.GetAllUsers)
-
+  
 
   e.GET("/answer/:id", handler.GetAnswer)  // :idはAnswerのIDではなくQuestionのID
-  e.GET("/comment/:id", handler.GetComment)  // :idはAnswerのIDではなくQuestionのID
 
+
+  e.GET("/comment/:id", handler.GetComment)  // :idはAnswerのIDではなくQuestionのID
 
   e.Start(":1323")
 }

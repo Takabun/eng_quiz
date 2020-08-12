@@ -6,6 +6,7 @@ import (
     "github.com/jinzhu/gorm"
     "time"
     . "../controller"
+    // "./structs"
 )
 
 type Model struct {
@@ -15,15 +16,21 @@ type Model struct {
   DeletedAt *time.Time
 }
 
-
 type Question struct {
     gorm.Model
     Text string 
     UserID int
     User User  // `gorm:"foreignkey:UserID"`なくてもイケる
-    Tags []*Tag  `gorm:"many2many:question_tags;"`
-    Answer Answer
-    Comments []Comment
+    Tags []Tag  `gorm:"many2many:question_tags;"`
+    QuestionImage []QuestionImage
+    // Answer Answer
+    // Comments []Comment
+}
+
+type QuestionImage struct {
+    gorm.Model
+    Url string
+    QuestionID int
 }
 
 type Answer struct {
@@ -31,6 +38,13 @@ type Answer struct {
     Text string
     QuestionID int
     // Question Question  //不要。(指定のQuestionのページにしか現れないと分かっているので)
+    AnswerImage []AnswerImage
+}
+
+type AnswerImage struct {
+    gorm.Model
+    Url string
+    AnswerID int
 }
 
 type User struct {
@@ -73,7 +87,7 @@ func GetQuestion(c echo.Context) error {
 
     if id := c.Param("id"); id != "" {
         var question Question
-        db.First(&question, id).Related(&question.User).Related(&question.Answer).Related(&question.Comments).Related(&question.Tags, "Tags")
+        db.First(&question, id).Related(&question.User).Related(&question.Tags, "Tags").Related(&question.QuestionImage) // .Related(&question.Answer).Related(&question.Comments)
         return c.JSON(http.StatusOK, question)
     } else {
         return c.JSON(http.StatusNotFound, nil)
@@ -139,6 +153,8 @@ func GetAllUsers(c echo.Context) error {
     return c.JSON(http.StatusOK, users)
 }
 
+
+
 // 個別のAnswer(:idはAnswerのIDではなくQuestionのID)
 func GetAnswer(c echo.Context) error {
     db := OpenSQLiteConnection()
@@ -148,12 +164,12 @@ func GetAnswer(c echo.Context) error {
     if id := c.Param("id"); id != "" {
         var answer Answer
         db.Where("question_id = ?", id).First(&answer)
+        db.Model(&answer).Related(&answer.AnswerImage) //上に繋げたら動かなかったけど、こうしたら動いた
         return c.JSON(http.StatusOK, answer)
     } else {
         return c.JSON(http.StatusNotFound, nil)
     }
 }
-
 
 // 個別のComment(:idはCommentのIDではなくQuestionのID)
 func GetComment(c echo.Context) error {
@@ -162,7 +178,7 @@ func GetComment(c echo.Context) error {
     db.AutoMigrate(&Comment{})
 
     if id := c.Param("id"); id != "" {
-        var comments []Comment      // Commentは複数あるので[]
+        var comments []Comment  // Commentは複数あるので[]
         db.Find(&comments).Where("question_id = ?", id)
 
         for i := range comments {
