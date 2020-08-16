@@ -27,6 +27,7 @@ type QuestionImage struct {
 	gorm.Model
 	Url string
 	QuestionID int
+	Name string
 }
 
 type Answer struct {
@@ -41,6 +42,7 @@ type AnswerImage struct {
 	gorm.Model
 	Url string
 	AnswerID int
+	Name string
 }
 
 type User struct {
