@@ -10,7 +10,7 @@ import (
 func CreateAssociation(c echo.Context) error {
   db := OpenSQLiteConnection()
   defer db.Close()
-  db.AutoMigrate(&Mylist{})
+  // db.AutoMigrate(&Mylist{})
 
   mylist := new(Mylist)
   if err := c.Bind(mylist); err != nil {

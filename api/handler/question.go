@@ -8,7 +8,6 @@ import (
   // "encoding/json"
   // "log"
   // "fmt"
-
 )
 
 func GetAllQuestions(c echo.Context) error {
@@ -35,7 +34,7 @@ func GetQuestion(c echo.Context) error {
   }
 }
 
-func CreateQuestion(c echo.Context, ) error {
+func CreateQuestion(c echo.Context) error {
   db := OpenSQLiteConnection()
   defer db.Close()
   db.AutoMigrate(&Question{})
@@ -46,21 +45,16 @@ func CreateQuestion(c echo.Context, ) error {
   }
   db.Create(&question)
 
-  // 今、これを動かせるようにトライ中。1つだけであれば動かせていたが…
-  for i := range uint[]{1,2} {
-    var tag Tag
-    tag.ID = i
-    db.Model(&question).Association("Tags").Append(&tag)
-  }
+  // fv := c.FormValue("addtagids") // 取れない
+  // fmt.Println("aaa", c.Request())
+  // fmt.Println("hoge", r.FormValue("addtagids"))
 
-  // そもそもc.Paramではダメ(/image/:idみたいなものでは無いので)
-  // []int{1,2}とすれば取り敢えず動く | addtagids := c.Param("addtagids")
-  
-  // for i := range addtagids {  // birds
+  //取り敢えず動くけど []uint{1,2}
+  // for _, id := range []uint{1,2} {
   //   var tag Tag
-  //   tag.ID = uint(i) //uintへ変換しないと
+  //   tag.ID = id
   //   db.Model(&question).Association("Tags").Append(&tag)
-  // }
+  // }s
 
   return c.JSON(http.StatusOK, question)
 }
