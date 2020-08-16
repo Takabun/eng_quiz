@@ -48,8 +48,10 @@ func initRouting(e *echo.Echo) {
   e.POST("/answerimage", handler.CreateAnswerImage)
   e.DELETE("/answerimage/:id", handler.DeleteAnswerImage)
 
-  e.POST("/association/:id", handler.CreateAssociation)
-  e.DELETE("/association/:id", handler.DeleteAssociation)
+  // e.POST("/association/:id", handler.CreateAssociation)
+  // e.DELETE("/association/:id", handler.DeleteAssociation)
+
+  e.POST("/tag", handler.CreateTag)
 
   e.Start(":1323")
 }

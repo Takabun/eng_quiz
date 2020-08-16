@@ -45,17 +45,6 @@ func CreateQuestion(c echo.Context) error {
   }
   db.Create(&question)
 
-  // fv := c.FormValue("addtagids") // 取れない
-  // fmt.Println("aaa", c.Request())
-  // fmt.Println("hoge", r.FormValue("addtagids"))
-
-  //取り敢えず動くけど []uint{1,2}
-  // for _, id := range []uint{1,2} {
-  //   var tag Tag
-  //   tag.ID = id
-  //   db.Model(&question).Association("Tags").Append(&tag)
-  // }s
-
   return c.JSON(http.StatusOK, question)
 }
 
@@ -70,7 +59,7 @@ func UpdateQuestion(c echo.Context) error {
 
   if id := c.Param("id"); id != "" {
     var question Question
-    db.First(&question, id).Update(newQuestion)
+    db.First(&question, id).Omit("User").Update(newQuestion)
     return c.JSON(http.StatusOK, question)
   } else {
     return c.JSON(http.StatusNotFound, nil)
