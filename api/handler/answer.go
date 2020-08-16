@@ -33,7 +33,15 @@ func CreateAnswer(c echo.Context) error {
   if err := c.Bind(answer); err != nil {
     return err
   }
-  db.Create(&answer)
+	db.Create(&answer)
+	
+	// ここから画像をAssociation
+	// db.Model(&answer).Association("AnswerImage").Append([]AnswerImage {{Url: "0816", Name: "0816"}, {Url: "0816", Name: "0816"}})
+
+	// keke := c.FormValue("keke")
+	// images := []AnswerImage{keke} 
+	// // images := []AnswerImage{AnswerImage keke}
+	// db.Model(&answer).Association("AnswerImage").Append(images)
 
   return c.JSON(http.StatusOK, answer)
 }

@@ -5,6 +5,10 @@ import (
   "github.com/labstack/echo"
   . "../controller"
   . "../model"
+  // "encoding/json"
+  // "log"
+  // "fmt"
+
 )
 
 func GetAllQuestions(c echo.Context) error {
@@ -31,7 +35,7 @@ func GetQuestion(c echo.Context) error {
   }
 }
 
-func CreateQuestion(c echo.Context) error {
+func CreateQuestion(c echo.Context, ) error {
   db := OpenSQLiteConnection()
   defer db.Close()
   db.AutoMigrate(&Question{})
@@ -41,6 +45,22 @@ func CreateQuestion(c echo.Context) error {
     return err
   }
   db.Create(&question)
+
+  // 今、これを動かせるようにトライ中。1つだけであれば動かせていたが…
+  for i := range uint[]{1,2} {
+    var tag Tag
+    tag.ID = i
+    db.Model(&question).Association("Tags").Append(&tag)
+  }
+
+  // そもそもc.Paramではダメ(/image/:idみたいなものでは無いので)
+  // []int{1,2}とすれば取り敢えず動く | addtagids := c.Param("addtagids")
+  
+  // for i := range addtagids {  // birds
+  //   var tag Tag
+  //   tag.ID = uint(i) //uintへ変換しないと
+  //   db.Model(&question).Association("Tags").Append(&tag)
+  // }
 
   return c.JSON(http.StatusOK, question)
 }
