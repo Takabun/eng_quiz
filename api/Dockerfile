@@ -1,6 +1,6 @@
-# FROM golang:1.10.0
+FROM golang:1.13
 # FROM golang:onbuild
-FROM golang:1.3.1-onbuild
+# FROM golang:1.3.1-onbuild
 
 # RUN go get github.com/labstack/echo/...
 
