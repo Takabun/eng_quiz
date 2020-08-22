@@ -1,13 +1,14 @@
 FROM golang:1.13
-# FROM golang:onbuild
-# FROM golang:1.3.1-onbuild
 
-# RUN go get github.com/labstack/echo/...
+RUN go get github.com/labstack/echo
+RUN go get github.com/jinzhu/gorm
+RUN go get github.com/dgrijalva/jwt-go
+RUN go get github.com/go-sql-driver/mysql
 
-# Docker上の作業ディレクトリ設定
-WORKDIR ./go 
-# ローカルのファイルをdocker にコピー
-# ADD . 
-COPY . /go
+# WORKDIR ./go  Docker上の作業ディレクトリ設定(不要。pwdが/go/goになる)
+# ADD . # ローカルのファイルをdocker にコピー
+
+#元はこうだったCOPY . /go
+COPY . .
 
 CMD ["go", "run", "main.go"]
