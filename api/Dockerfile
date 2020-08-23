@@ -1,9 +1,9 @@
 FROM golang:1.13
 
-RUN go get github.com/labstack/echo
-RUN go get github.com/jinzhu/gorm
-RUN go get github.com/dgrijalva/jwt-go
-RUN go get github.com/go-sql-driver/mysql
+RUN go get github.com/labstack/echo && \
+    go get github.com/jinzhu/gorm  && \
+    go get github.com/dgrijalva/jwt-go  && \
+    go get github.com/go-sql-driver/mysql
 
 # WORKDIR ./go  Docker上の作業ディレクトリ設定(不要。pwdが/go/goになる)
 # ADD . # ローカルのファイルをdocker にコピー
