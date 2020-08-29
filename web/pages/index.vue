@@ -6,16 +6,23 @@
         <vuetify-logo />
       </div>
       <v-card>
-        <v-card-title class="headline">Welcome to the Vuetify + Nuxt.js template</v-card-title>
+        <v-card-title class="headline"
+          >Welcome to the Vuetify + Nuxt.js template</v-card-title
+        >
         <v-card-text>
-          <p>Vuetify is a progressive Material Design component framework for Vue.js. It was designed to empower developers to create amazing applications.</p>
+          <p>
+            Vuetify is a progressive Material Design component framework for
+            Vue.js. It was designed to empower developers to create amazing
+            applications.
+          </p>
           <p>
             For more information on Vuetify, check out the
             <a
               href="https://vuetifyjs.com"
               target="_blank"
               rel="noopener noreferrer"
-            >documentation</a>.
+              >documentation</a
+            >.
           </p>
           <p>
             If you have questions, please join the official
@@ -24,7 +31,8 @@
               target="_blank"
               rel="noopener noreferrer"
               title="chat"
-            >discord</a>.
+              >discord</a
+            >.
           </p>
           <p>
             Find a bug? Report it on the github
@@ -33,24 +41,34 @@
               target="_blank"
               rel="noopener noreferrer"
               title="contribute"
-            >issue board</a>.
+              >issue board</a
+            >.
           </p>
-          <p>Thank you for developing with Vuetify and I look forward to bringing more exciting features in the future.</p>
+          <p>
+            Thank you for developing with Vuetify and I look forward to bringing
+            more exciting features in the future.
+          </p>
           <div class="text-xs-right">
             <em>
               <small>&mdash; John Leider</small>
             </em>
           </div>
           <hr class="my-3" />
-          <a href="https://nuxtjs.org/" target="_blank" rel="noopener noreferrer">Nuxt Documentation</a>
+          <a
+            href="https://nuxtjs.org/"
+            target="_blank"
+            rel="noopener noreferrer"
+            >Nuxt Documentation</a
+          >
           <br />
           <a
             href="https://github.com/nuxt/nuxt.js"
             target="_blank"
             rel="noopener noreferrer"
-          >Nuxt GitHub</a>
+            >Nuxt GitHub</a
+          >
         </v-card-text>
-        ケケケk
+        ケケケkgege111
         {{ this.name }}
         <v-card-actions>
           <v-spacer />
@@ -61,12 +79,17 @@
   </v-layout>
 </template>
 
-<script>
-import Logo from "~/components/Logo.vue";
-import VuetifyLogo from "~/components/VuetifyLogo.vue";
+<script lang="ts">
+import Vue from "vue";
 import axios from "axios";
+import Logo from "../components/Logo.vue"; // ~を＠に変更→..に変更
+import VuetifyLogo from "../components/VuetifyLogo.vue";
 
-export default {
+type sample = {
+  aaa: string;
+};
+
+export default Vue.extend({
   components: {
     Logo,
     VuetifyLogo
@@ -74,7 +97,7 @@ export default {
 
   data() {
     return {
-      name
+      name: Array
     };
   },
 
@@ -85,5 +108,5 @@ export default {
       return;
     });
   }
-};
+});
 </script>
