@@ -46,7 +46,11 @@ export default {
   /*
    ** Nuxt.js dev-modules
    */
-  buildModules: ["@nuxtjs/vuetify", "@nuxt/typescript-build"],
+  buildModules: [
+    "@nuxtjs/vuetify",
+    "@nuxt/typescript-build",
+    "nuxt-typed-vuex"
+  ],
   /*
    ** Nuxt.js modules
    */
@@ -76,5 +80,7 @@ export default {
    ** Build configuration
    ** See https://nuxtjs.org/api/configuration-build/
    */
-  build: {}
+  build: {
+    transpile: [/typed-vuex/]
+  }
 };

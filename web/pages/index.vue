@@ -82,14 +82,15 @@
 <script lang="ts">
 import Vue from "vue";
 import axios from "axios";
-import Logo from "../components/Logo.vue"; // ~を＠に変更→..に変更
-import VuetifyLogo from "../components/VuetifyLogo.vue";
+import Logo from "~/components/Logo.vue"; // ~ → ＠ → .. に変更 |中身がない状態で export すれば解消するっぽい https://qiita.com/shindex/items/a90217b9e4c03c5b5215 → 結局必要なかった
+import VuetifyLogo from "~/components/VuetifyLogo.vue";
 
 type sample = {
   aaa: string;
 };
 
 export default Vue.extend({
+  // Vue.extendがあるおかげで型推論が効くようになる
   components: {
     Logo,
     VuetifyLogo
@@ -101,12 +102,20 @@ export default Vue.extend({
     };
   },
 
+  methods: {
+    ConsoleLogging() {
+      console.log("できたよ！");
+    }
+  },
+
   mounted() {
     axios.get(`http://localhost:1323/users`).then(res => {
       console.log("axios結果！！", res);
       this.name = res.data;
       return;
     });
+    // const age = this.$accessor.age.age;
+    // this.$accessor.age.hoge();
   }
 });
 </script>
