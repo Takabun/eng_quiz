@@ -16,10 +16,10 @@ export const mutations = mutationTree(state, {
   }
 });
 
-export const actions = actionTree(
-  { state, getters, mutations },
-  {
-    getOlder({ getters, commit }) {
+export const actions = actionTree({ state, getters, mutations },{
+  // 戻り値の型を明示的にしないとthis.app.$accessor経由でmutationsやactionsを
+  // 呼び出そうとしたときに型推論が効かなくなってしまう
+    getOlder({ getters, commit }): void {
       const currentAge = getters.age;
       commit("setAge", currentAge + 1);
     }
