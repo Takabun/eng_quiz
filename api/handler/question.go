@@ -17,6 +17,11 @@ func GetAllQuestions(c echo.Context) error {
 
   var questions []Question
   db.Find(&questions)
+
+  for i := range questions {
+    db.Model(questions[i]).Related(&questions[i].Tags, "Tags").Related(&questions[i].QuestionImage) // 第二引数("User")なくてもイケた
+  }
+
   return c.JSON(http.StatusOK, questions)
 }
 
