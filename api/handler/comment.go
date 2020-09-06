@@ -18,9 +18,9 @@ func GetComment(c echo.Context) error {
 		var comments []Comment  // Commentは複数あるので[]
 		db.Find(&comments).Where("question_id = ?", id)
 
-		for i := range comments {
-			db.Model(comments[i]).Related(&comments[i].User) // 第二引数("User")なくてもイケた
-		}
+		// for i := range comments {
+		// 	db.Model(comments[i]).Related(&comments[i].User) // 第二引数("User")なくてもイケた
+		// }
 
 		return c.JSON(http.StatusOK, comments)
 	} else {

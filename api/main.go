@@ -21,11 +21,11 @@ func initRouting(e *echo.Echo) {
   e.PUT("/question/:id", handler.UpdateQuestion)
   e.DELETE("/question/:id", handler.DeleteQuestion)
 
-  e.GET("/users", handler.GetAllUsers)
-  e.GET("/user/:id", handler.GetUser)
-  e.POST("/user", handler.CreateUser)
-  e.PUT("/user/:id", handler.UpdateUser)
-  e.DELETE("/user/:id", handler.DeleteUser)
+  // e.GET("/users", handler.GetAllUsers)
+  // e.GET("/user/:id", handler.GetUser)
+  // e.POST("/user", handler.CreateUser)
+  // e.PUT("/user/:id", handler.UpdateUser)
+  // e.DELETE("/user/:id", handler.DeleteUser)
 
   e.GET("/comments", handler.GetAllComments)
   e.GET("/comment/:id", handler.GetComment)  // :idはCommentのIDではなくQuestionのID
@@ -33,9 +33,9 @@ func initRouting(e *echo.Echo) {
   e.PUT("/comment/:id", handler.UpdateComment)
   e.DELETE("/comment/:id", handler.DeleteComment)
 
-  e.GET("/mylist/:id", handler.GetMylistForUser)  // :idはMylistのIDではなくUserのID
-  e.POST("/mylist", handler.CreateMylist)
-  e.DELETE("/mylist/:id", handler.DeleteMylist)
+  // e.GET("/mylist/:id", handler.GetMylistForUser)  // :idはMylistのIDではなくUserのID
+  // e.POST("/mylist", handler.CreateMylist)
+  // e.DELETE("/mylist/:id", handler.DeleteMylist)
 
   e.GET("/answer/:id", handler.GetAnswer)  // :idはAnswerのIDではなくQuestionのID
   e.POST("/answer", handler.CreateAnswer)

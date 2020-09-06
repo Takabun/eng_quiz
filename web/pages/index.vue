@@ -109,7 +109,7 @@ export default Vue.extend({
   },
 
   mounted() {
-    axios.get(`http://localhost:1323/users`).then(res => {
+    axios.get(`http://localhost:1323/questions`).then(res => {
       console.log("axios結果！！", res);
       this.name = res.data;
       return;

@@ -27,7 +27,8 @@ func GetQuestion(c echo.Context) error {
 
   if id := c.Param("id"); id != "" {
     var question Question
-    db.First(&question, id).Related(&question.User).Related(&question.Tags, "Tags").Related(&question.QuestionImage) // .Related(&question.Answer).Related(&question.Comments)
+    // db.First(&question, id).Related(&question.User).Related(&question.Tags, "Tags").Related(&question.QuestionImage) // .Related(&question.Answer).Related(&question.Comments)
+    db.First(&question, id).Related(&question.Tags, "Tags").Related(&question.QuestionImage)
     return c.JSON(http.StatusOK, question)
   } else {
     return c.JSON(http.StatusNotFound, nil)
@@ -59,7 +60,7 @@ func UpdateQuestion(c echo.Context) error {
 
   if id := c.Param("id"); id != "" {
     var question Question
-    db.First(&question, id).Omit("User").Update(newQuestion)
+    db.First(&question, id).Update(newQuestion) // db.First(&question, id).Omit("User").Update(newQuestion)
     return c.JSON(http.StatusOK, question)
   } else {
     return c.JSON(http.StatusNotFound, nil)

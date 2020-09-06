@@ -14,13 +14,15 @@ type Model struct {
 
 type Question struct {
 	gorm.Model
+	User string
 	Text string 
-	UserID int
-	User User  // `gorm:"foreignkey:UserID"`なくてもイケる
+	DefaultImage int
+	// UserID int
+	// User User  // `gorm:"foreignkey:UserID"`なくてもイケる
 	Tags []Tag  `gorm:"many2many:question_tags;"`
 	QuestionImage []QuestionImage
 	// Answer Answer
-	// Comments []Comment
+	// Comments []Comment	
 }
 
 type QuestionImage struct {
@@ -45,13 +47,13 @@ type AnswerImage struct {
 	Name string
 }
 
-type User struct {
-	gorm.Model
-	Name string
-	Email string
-	Password string
-	Questions []Question  //[]Questionとすると(スライス)動く
-}
+// type User struct {
+// 	gorm.Model
+// 	Name string
+// 	Email string
+// 	Password string
+// 	Questions []Question  //[]Questionとすると(スライス)動く
+// }
 
 type Tag struct {
 	gorm.Model
@@ -61,16 +63,18 @@ type Tag struct {
 
 type Comment struct {
 	gorm.Model
+	User string
 	Text string
 	QuestionID int //実際はたぶん使わない
-	UserID int
-	User User // 動作しない`gorm:"foreignkey:UserID"`
+	// UserID int
+	// User User // 動作しない`gorm:"foreignkey:UserID"`
+	
 }
 
-type Mylist struct {
-	gorm.Model
-	UserID int
-	QuestionID int
-	User User
-	Question Question
-}
+// type Mylist struct {
+// 	gorm.Model
+// 	UserID int
+// 	QuestionID int
+// 	User User
+// 	Question Question
+// }
