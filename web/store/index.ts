@@ -1,5 +1,5 @@
 import { getAccessorType, mutationTree , actionTree} from "typed-vuex";
-import * as age from "~/store/age";
+import * as questions from "~/store/questions";
 
 export const state = () => ({});
 export const getters = {};
@@ -11,7 +11,7 @@ export const accessorType = getAccessorType({
   mutations,
   actions,
   modules: {
-    age
+    questions
   }
 });
 

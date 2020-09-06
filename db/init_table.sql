@@ -6,7 +6,7 @@ CREATE TABLE `tags` (
   `deleted_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `idx_tags_deleted_at` (`deleted_at`)
-) ENGINE=InnoDB AUTO_INCREMENT DEFAULT CHARSET=utf8;
+);
 
 
 CREATE TABLE `questions` (
@@ -18,8 +18,8 @@ CREATE TABLE `questions` (
   `updated_at` datetime DEFAULT NULL,
   `deleted_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `idx_questions_deleted_at` (`deleted_at`),
-) ENGINE=InnoDB AUTO_INCREMENT DEFAULT CHARSET=utf8;
+  KEY `idx_questions_deleted_at` (`deleted_at`)
+);
 
 
 CREATE TABLE `answers` (
@@ -33,7 +33,7 @@ CREATE TABLE `answers` (
   UNIQUE KEY `question_id` (`question_id`),
   KEY `idx_answers_deleted_at` (`deleted_at`),
   CONSTRAINT `answers_ibfk_1` FOREIGN KEY (`question_id`) REFERENCES `questions` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT DEFAULT CHARSET=utf8;
+);
 
 
 CREATE TABLE `question_images` (
@@ -48,7 +48,7 @@ CREATE TABLE `question_images` (
   KEY `question_id` (`question_id`),
   KEY `idx_question_images_deleted_at` (`deleted_at`),
   CONSTRAINT `question_images_ibfk_1` FOREIGN KEY (`question_id`) REFERENCES `questions` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+);
 
 
 CREATE TABLE `answer_images` (
@@ -63,7 +63,7 @@ CREATE TABLE `answer_images` (
   KEY `answer_id` (`answer_id`),
   KEY `idx_answer_images_deleted_at` (`deleted_at`),
   CONSTRAINT `answer_images_ibfk_1` FOREIGN KEY (`answer_id`) REFERENCES `answers` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
+);
 
 
 CREATE TABLE `comments` (
@@ -78,7 +78,7 @@ CREATE TABLE `comments` (
   KEY `question_id` (`question_id`),
   KEY `idx_comments_deleted_at` (`deleted_at`),
   CONSTRAINT `comments_ibfk_2` FOREIGN KEY (`question_id`) REFERENCES `questions` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+);
 
 CREATE TABLE `question_tags` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -89,4 +89,4 @@ CREATE TABLE `question_tags` (
   KEY `tag_id` (`tag_id`),
   CONSTRAINT `question_tags_ibfk_1` FOREIGN KEY (`question_id`) REFERENCES `questions` (`id`),
   CONSTRAINT `question_tags_ibfk_2` FOREIGN KEY (`tag_id`) REFERENCES `tags` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8;
+);

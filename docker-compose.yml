@@ -12,7 +12,7 @@ services:
     image: db_image
     container_name: db
     ports:
-      - 3306:3306
+      - 4306:3306  #sequel proで接続する関係から4306にしている
     environment:
       MYSQL_ROOT_PASSWORD: password
       MYSQL_DATABASE: eng_quiz # go_trial
