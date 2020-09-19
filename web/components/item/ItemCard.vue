@@ -10,14 +10,14 @@
       src="https://cdn.vuetifyjs.com/images/cards/docks.jpg"
     >
     </v-img>
-    <v-card-subtitle class="pb-0">{{item.User}}</v-card-subtitle>
+    <v-card-subtitle class="pb-0">{{item.user}}</v-card-subtitle>
     <v-card-text class="text--primary">
-      <div style="height: 45px;" class="overflow-x-hidden">{{item.Text}}</div>
+      <div style="height: 45px;" class="overflow-x-hidden">{{item.text}}</div>
     </v-card-text>
     <v-card-actions>
       <div v-for="item in item.Tags" :key="item.Id" class="ma-1">
       <v-btn color="primary" >
-        {{item.Name}}
+        {{item.name}}
       </v-btn>
       </div>
     </v-card-actions>

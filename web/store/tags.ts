@@ -1,9 +1,6 @@
 import { getterTree, mutationTree, actionTree } from "typed-vuex";
-
-interface Tag {
-  id: number,
-  name: string
-}
+import axios from "axios";
+import {Tag, Image, Question, Raw_Tag, Raw_Image, Raw_Question} from "../types/types"
 
 export const state = () => ({
   tags: [] as Tag[]
@@ -23,9 +20,18 @@ export const mutations = mutationTree(state, {
 
 // 戻り値の型を明示的にしないとthis.app.$accessor経由でmutationsやactionsを呼び出そうとしたときに型推論が効かなくなってしまう
 export const actions = actionTree({ state, getters, mutations }, {
-    actionTags({ getters, commit }): void {
-      const currentTags = getters.tags;
-      commit("setTags", currentTags);
+    GetTags({ getters, commit }): void {
+      axios.get(`http://localhost:1323/tags`).then((res) => {
+      let list: Tag[] = [];
+      res.data.forEach((element: Raw_Tag) => {
+        const payload = {
+          id: element.ID,
+          name: element.Name
+        }
+        list.push(payload)
+      });
+      commit("setTags", list);
+      });
     }
   }
 );

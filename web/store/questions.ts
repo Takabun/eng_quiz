@@ -1,24 +1,6 @@
 import { getterTree, mutationTree, actionTree } from "typed-vuex";
-
-interface Tag {
-  id: number,
-  name: string
-}
-
-interface Image{
-  url: string;
-}
-
-interface Question {
-  id: number,
-  created_at: Date,
-  updated_at: Date,
-  user: string,
-  text: string,
-  default_image: number,
-  tags: Tag[],
-  images: Image[]
-}
+import axios from "axios";
+import {Tag, Image, Question, Raw_Tag, Raw_Image, Raw_Question} from "../types/types"
 
 export const state = () => ({
   questions: [] as Question[]
@@ -38,9 +20,23 @@ export const mutations = mutationTree(state, {
 
 // 戻り値の型を明示的にしないとthis.app.$accessor経由でmutationsやactionsを呼び出そうとしたときに型推論が効かなくなってしまう
 export const actions = actionTree({ state, getters, mutations }, {
-    actionQuestions({ getters, commit }): void {
-      const currentQuestions = getters.questions;
-      commit("setQuestions", currentQuestions);
-    }
+  GetQuestions({ getters, commit }): void {
+    axios.get(`http://localhost:1323/questions`).then((res) => {
+    let list: Question[] = [];
+    res.data.forEach((element: Raw_Question) => {
+      const payload = {
+        id: element.ID,
+        created_at: element.CreatedAt,
+        user: element.User,
+        text: element.Text,
+        default_image: element.DeefaultImage,
+        tags: element.Tags.map(obj => {const robj: Tag = {id: obj.ID, name: obj.Name}; return robj} ),
+        images: element.QuestionImages.map(obj => {const robj: Image = {url: obj.Url}; return robj} ),
+      }
+      list.push(payload)
+    });
+    commit("setQuestions", list);
+    });
+  }
   }
 );

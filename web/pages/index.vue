@@ -2,12 +2,13 @@
   <v-layout column justify-center align-center>
     <v-flex xs12 sm12 md8>
       <!-- {{ questions }} -->
-      <v-container v-if="questions.length"
+      {{this.getTags()}}
+      <v-container v-if="getQuestions().length"
                    class="pb-8"
                    >
         <div class="d-flex  flex-wrap">
           <!-- style="overflow-x:scroll" -->
-          <div v-for="item in questions" :key="item.id"
+          <div v-for="item in getQuestions()" :key="item.id"
                class="ma-4">
              <item-card :item="item"
                         :width="250"
@@ -25,10 +26,6 @@ import Vue from "vue";
 import axios from "axios";
 import ItemCard from '../components/item/ItemCard.vue'
 
-type sample = {
-  aaa: string;
-};
-
 export default Vue.extend({
   // Vue.extendがあるおかげで型推論が効くようになる
   components: {
@@ -37,30 +34,23 @@ export default Vue.extend({
 
   data() {
     return {
-      questions: Array,
-      tags: Array
+      // questions: Array,
+      // tags: this.$accessor.tags.tags
     };
   },
 
   methods: {
-    ConsoleLogging() {
-      console.log("できたよ！");
+    getTags() {
+      return this.$accessor.tags.tags
+    },
+    getQuestions() {
+      return this.$accessor.questions.questions
     }
   },
 
   mounted() {
-    axios.get(`http://localhost:1323/questions`).then(res => {
-      console.log("axios結果あ！！", res);
-      this.questions = res.data;
-      return;
-    });
-    axios.get(`http://localhost:1323/tags`).then(res => {
-      console.log("tags！！", res);
-      this.tags = res.data;
-      return;
-    });
-    // const age = this.$accessor.age.age;
-    // this.$accessor.age.hoge();
+    this.$accessor.tags.GetTags();
+    this.$accessor.questions.GetQuestions()
   }
 });
 </script>
