@@ -52,6 +52,7 @@ func initRouting(e *echo.Echo) {
   // e.DELETE("/association/:id", handler.DeleteAssociation)
 
   e.POST("/tag", handler.CreateTag)
+  e.GET("/tags", handler.GetTags)
 
   e.Start(":1323")
 }

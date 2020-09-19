@@ -20,7 +20,7 @@ type Question struct {
 	// UserID int
 	// User User  // `gorm:"foreignkey:UserID"`なくてもイケる
 	Tags []Tag  `gorm:"many2many:question_tags;"`
-	QuestionImage []QuestionImage
+	QuestionImages []QuestionImage
 	// Answer Answer
 	// Comments []Comment	
 }

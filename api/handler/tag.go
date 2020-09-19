@@ -20,3 +20,14 @@ func CreateTag(c echo.Context) error {
 
   return c.JSON(http.StatusOK, tag)
 }
+
+
+func GetTags(c echo.Context) error {
+  db := OpenSQLiteConnection()
+  defer db.Close()
+  db.AutoMigrate(&Tag{})
+
+  var tags []Tag
+  db.Find(&tags)
+  return c.JSON(http.StatusOK, tags)
+}

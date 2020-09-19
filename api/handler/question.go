@@ -19,7 +19,7 @@ func GetAllQuestions(c echo.Context) error {
   db.Find(&questions)
 
   for i := range questions {
-    db.Model(questions[i]).Related(&questions[i].Tags, "Tags").Related(&questions[i].QuestionImage) // 第二引数("User")なくてもイケた
+    db.Model(questions[i]).Related(&questions[i].Tags, "Tags").Related(&questions[i].QuestionImages, "QuestionImages") // 第二引数("User")なくてもイケた
   }
 
   return c.JSON(http.StatusOK, questions)
@@ -33,7 +33,7 @@ func GetQuestion(c echo.Context) error {
   if id := c.Param("id"); id != "" {
     var question Question
     // db.First(&question, id).Related(&question.User).Related(&question.Tags, "Tags").Related(&question.QuestionImage) // .Related(&question.Answer).Related(&question.Comments)
-    db.First(&question, id).Related(&question.Tags, "Tags").Related(&question.QuestionImage)
+    db.First(&question, id).Related(&question.Tags, "Tags").Related(&question.QuestionImages, "QuestionImages")
     return c.JSON(http.StatusOK, question)
   } else {
     return c.JSON(http.StatusNotFound, nil)

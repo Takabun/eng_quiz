@@ -1,7 +1,21 @@
 <template>
   <v-layout column justify-center align-center>
-    <v-flex xs12 sm8 md6>
-      {{ this.questions }}
+    <v-flex xs12 sm12 md8>
+      <!-- {{ questions }} -->
+      <v-container v-if="questions.length"
+                   class="pb-8"
+                   >
+        <div class="d-flex  flex-wrap">
+          <!-- style="overflow-x:scroll" -->
+          <div v-for="item in questions" :key="item.id"
+               class="ma-4">
+             <item-card :item="item"
+                        :width="250"
+                        elevation="2"
+                        />
+          </div>
+        </div>
+      </v-container>
     </v-flex>
   </v-layout>
 </template>
@@ -23,7 +37,8 @@ export default Vue.extend({
 
   data() {
     return {
-      questions: Array
+      questions: Array,
+      tags: Array
     };
   },
 
@@ -35,8 +50,13 @@ export default Vue.extend({
 
   mounted() {
     axios.get(`http://localhost:1323/questions`).then(res => {
-      console.log("axios結果！！", res);
+      console.log("axios結果あ！！", res);
       this.questions = res.data;
+      return;
+    });
+    axios.get(`http://localhost:1323/tags`).then(res => {
+      console.log("tags！！", res);
+      this.tags = res.data;
       return;
     });
     // const age = this.$accessor.age.age;
