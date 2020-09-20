@@ -4,12 +4,22 @@
     class="mx-auto"
     :width="width"
   >
-    <v-img
-      class=""
-      height="200px"
-      src="https://cdn.vuetifyjs.com/images/cards/docks.jpg"
-    >
-    </v-img>
+    <div v-if='item.default_image !== 0'>
+      <v-img
+        class=""
+        height="200px"
+        :src='`quesition_default_${item.default_image}.jpg`'
+      >
+      </v-img>
+    </div>
+    <div v-else>
+      <v-img
+        class=""
+        height="200px"
+        :src="item.images[0]"
+      >
+      </v-img>
+    </div>
     <v-card-subtitle class="pb-0">{{item.user}}</v-card-subtitle>
     <v-card-text class="text--primary">
       <div style="height: 45px;" class="overflow-x-hidden">{{item.text}}</div>
@@ -26,6 +36,7 @@
 </template>
 
 <script>
+import define from '../../plugins/define'
 export default {
    props: {
     item: {
@@ -39,7 +50,13 @@ export default {
     thumbWidth: {
       type: Number | String,
       default: 150
-    },
+    }
+   },
+
+   data() {
+    return {
+      picture: "https://cdn.vuetifyjs.com/images/cards/docks.jpg"
+    }
    }
 };
 </script>

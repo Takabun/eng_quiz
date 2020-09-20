@@ -1,8 +1,8 @@
 <template>
   <v-layout column justify-center align-center>
     <v-flex xs12 sm12 md8>
-      <!-- {{ questions }} -->
-      {{this.getTags()}}
+      <!-- {{ getTags() }}
+      {{ getQuestions() }} -->
       <v-container v-if="getQuestions().length"
                    class="pb-8"
                    >
@@ -50,7 +50,7 @@ export default Vue.extend({
 
   mounted() {
     this.$accessor.tags.GetTags();
-    this.$accessor.questions.GetQuestions()
+    this.$accessor.questions.GetQuestions();
   }
 });
 </script>

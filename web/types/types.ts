@@ -32,7 +32,7 @@ interface Raw_Question {
   UpdatedAt: Date,
   User: string,
   Text: string,
-  DeefaultImage: number,
+  DefaultImage: number,
   Tags: Raw_Tag[],
   QuestionImages: Raw_Image[]
 }
