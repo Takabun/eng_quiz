@@ -4,6 +4,7 @@
     class="mx-auto"
     :width="width"
   >
+
     <div v-if='item.default_image !== 0'>
       <v-img
         class=""
@@ -25,10 +26,11 @@
       <div style="height: 45px;" class="overflow-x-hidden">{{item.text}}</div>
     </v-card-text>
     <v-card-actions>
-      <div v-for="item in item.Tags" :key="item.Id" class="ma-1">
-      <v-btn color="primary" >
-        {{item.name}}
-      </v-btn>
+      {{item.Tags}}
+      <div v-for="item in item.tags" :key="item.Id" class="ma-1">
+        <v-chip color="primary" >
+          {{item.name}}
+        </v-chip>
       </div>
     </v-card-actions>
   </v-card>
