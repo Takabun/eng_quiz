@@ -32,14 +32,7 @@
                     v-for="item in getTags()" 
                     :key="item.id"
                     @click="ApplyExistingTag(item)"
-                    color="blue lighten-5"
-                  > {{item.name}}</v-chip>
-              </v-chip-group>
-              <v-chip-group >
-                  <v-chip 
-                    v-for="item in question.Tags" 
-                    :key="item.id"
-                    color="primary"
+                    :color="` ${question.Tags.indexOf(item) > -1 ? 'primary': 'blue lighten-5'}`"
                   > {{item.name}}</v-chip>
               </v-chip-group>
             </div>
@@ -76,9 +69,11 @@
                       :key="i"
                       cols="4">
                   <v-img :src="item.value"
-                        :style="`outline: ${question.DefaultImage == i ? 3 : 0}px solid #1976d2;cursor: pointer `"
+                        :style="`outline: ${question.DefaultImage == i+1 ? 3 : 0}px solid #1976d2; 
+                                opacity: ${question.DefaultImage == i+1 ? 1 : 0.4};
+                                 cursor: pointer `"
                         aspect-ratio="1.5"
-                        @click="question.DefaultImage = i"
+                        @click="question.DefaultImage = i+1"
                          />
                 </v-col>
               </v-row>
@@ -123,6 +118,7 @@ import Vue from "vue";
 import axios from "axios";
 import {Tag, Image, Question, Raw_Tag, Raw_Image, Raw_Question} from "../types/types"
 
+
 export default Vue.extend({
   data() {
     return {
@@ -130,7 +126,7 @@ export default Vue.extend({
         User: "Test",
         Text: "ケケ",
         Tags: [] as Tag[],
-        DefaultImage: 1,
+        DefaultImage: 0,
         // QuestionImages: [],
       },
       newTagDraft: '' as string,
@@ -170,7 +166,8 @@ export default Vue.extend({
   
   computed: {
     isDisabled() {
-      if (this.question.User !== "" && this.question.Text !=="" && this.answer.Text !=="" ) return false;
+      if (this.question.User !== "" && this.question.Text !=="" && this.answer.Text !==""
+        && (this.question.DefaultImage !== 0 || this.questionImages.length !== 0) ) return false;
       return true;
     }
   },
