@@ -83,6 +83,9 @@
             <!-- 画像アップロード(Question) -->
             <div class="mb-3">
               <h3 class="mb-2">画像アップロード(Question)<small class="body-2 primary--text ml-1">＊</small></h3>
+              <input type="file" id="file-chooser" />
+              <button id="upload-button">Upload to S3</button>
+              <div id="results"></div>
             </div>
 
             <!-- 答え -->
@@ -116,7 +119,8 @@
 <script lang="ts">
 import Vue from "vue";
 import axios from "axios";
-import {Tag, Image, Question, Raw_Tag, Raw_Image, Raw_Question} from "../types/types"
+import {Tag, Image, Question, Raw_Tag, Raw_Image, Raw_Question} from "../types/types";
+import AWS from "aws-sdk"
 
 
 export default Vue.extend({
@@ -160,7 +164,23 @@ export default Vue.extend({
     },
 
     onCreate() {
+
+      const button = document.getElementById('upload-button');
+      const results = <HTMLElement>document.getElementById('results');
+      // const file = fileChooser.files[0];
+      const file = fileChooser.files !== null ? fileChooser.files[0] : null;  //後で確認！
       
+      if (file) {
+        results.innerHTML = '';
+        // var params = {Key: file.name, ContentType: file.type, Body: file};  //before
+        var params = {Key: file.name, Bucket: file.type, Body: file};  //後で確認！
+        bucket.putObject(params, function (err, data) { 
+          results.innerHTML = err ? 'ERROR!' : 'UPLOADED';
+          console.log("data", data)
+        });
+      } else {
+        results.innerHTML = 'Nothing to upload.';
+      }
     }
   },
   
