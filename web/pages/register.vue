@@ -121,6 +121,7 @@ import Vue from "vue";
 import axios from "axios";
 import {Tag, Image, Question, Raw_Tag, Raw_Image, Raw_Question} from "../types/types";
 import AWS from "aws-sdk"
+import secrets from "../_secret/aws_info"
 
 
 export default Vue.extend({
@@ -164,7 +165,9 @@ export default Vue.extend({
     },
 
     onCreate() {
-
+      AWS.config.update({accessKeyId: secrets.accessKeyId, secretAccessKey: secrets.secretAccessKey});
+      const bucket = new AWS.S3({params: {Bucket: secrets.Bucket}});
+      const fileChooser= <HTMLInputElement>document.getElementById('file-chooser'); //後で確認！
       const button = document.getElementById('upload-button');
       const results = <HTMLElement>document.getElementById('results');
       // const file = fileChooser.files[0];
