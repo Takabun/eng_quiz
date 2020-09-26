@@ -12,10 +12,13 @@
   },
   "dependencies": {
     "@nuxt/typescript-runtime": "^1.0.0",
+    "@nuxtjs/proxy": "^2.0.1",
+    "@types/uuid": "^8.3.0",
     "aws-sdk": "^2.760.0",
     "axios": "^0.19.2",
     "nuxt": "^2.13.0",
-    "nuxt-typed-vuex": "^0.1.20"
+    "nuxt-typed-vuex": "^0.1.20",
+    "uuid": "^8.3.0"
   },
   "devDependencies": {
     "@nuxt/types": "^2.14.4",

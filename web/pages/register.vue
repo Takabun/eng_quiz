@@ -2,8 +2,8 @@
   <!-- <v-content> -->
     <v-container>
       <v-row>
-        <v-col cols="7"
-               md="7"
+        <v-col
+               md="12"
                lg="8">
             <v-alert class="">
               <small class="primary--text">＊</small>は必須項目です
@@ -84,7 +84,7 @@
             <div class="mb-3">
               <h3 class="mb-2">画像アップロード(Question)<small class="body-2 primary--text ml-1">＊</small></h3>
               <input type="file" id="file-chooser" />
-              <button id="upload-button">Upload to S3</button>
+              <button id="upload-button" @click="onCreateImage()">Upload to S3</button>
               <div id="results"></div>
             </div>
 
@@ -116,15 +116,25 @@
   <!-- </v-content> -->
 </template>
 
+
+
 <script lang="ts">
 import Vue from "vue";
 import axios from "axios";
 import {Tag, Image, Question, Raw_Tag, Raw_Image, Raw_Question} from "../types/types";
-import AWS from "aws-sdk"
 import secrets from "../_secret/aws_info"
-
+import AWS from "aws-sdk"
+import uuid from "uuid"
 
 export default Vue.extend({
+  // head() {  // headを適用するにはexport default {}とする必要がある
+  //   return {
+  //     script: [
+  //       { src:'https://sdk.amazonaws.com/js/aws-sdk-2.0.0-rc1.min.js' }
+  //     ]
+  //   }
+  // },
+
   data() {
     return {
       question: {
@@ -142,7 +152,6 @@ export default Vue.extend({
         // AnswerImage: []
       },
       answerImages: [],
-
     }
   },
 
@@ -164,26 +173,50 @@ export default Vue.extend({
       return this.$accessor.tags.tags
     },
 
-    onCreate() {
+    onCreateImage() {
       AWS.config.update({accessKeyId: secrets.accessKeyId, secretAccessKey: secrets.secretAccessKey});
       const bucket = new AWS.S3({params: {Bucket: secrets.Bucket}});
-      const fileChooser= <HTMLInputElement>document.getElementById('file-chooser'); //後で確認！
+      const fileChooser= <HTMLInputElement>document.getElementById('file-chooser');
       const button = document.getElementById('upload-button');
       const results = <HTMLElement>document.getElementById('results');
-      // const file = fileChooser.files[0];
-      const file = fileChooser.files !== null ? fileChooser.files[0] : null;  //後で確認！
+      const file = fileChooser.files![0]; //!の位置でハマった
       
-      if (file) {
-        results.innerHTML = '';
-        // var params = {Key: file.name, ContentType: file.type, Body: file};  //before
-        var params = {Key: file.name, Bucket: file.type, Body: file};  //後で確認！
-        bucket.putObject(params, function (err, data) { 
-          results.innerHTML = err ? 'ERROR!' : 'UPLOADED';
-          console.log("data", data)
-        });
-      } else {
-        results.innerHTML = 'Nothing to upload.';
-      }
+// before!
+      // if (file) {
+      //   results.innerHTML = '';
+      //   const params: any = {Key: file.name, ContentType: file.type, Body: file};  //before
+      //   // var params = {Key: file.name, Bucket: file.type, Body: file};  //後で確認 after
+
+      //   const uploadPromise = bucket.putObject(params).promise();
+      //   uploadPromise
+      //     .then(function(data) {
+      //       console.log("uploaded!", data);
+      //       results.innerHTML = 'UPLOADED';
+      //     })
+      //     .catch(function(err) {
+      //       console.error("error!", err, err.stack);
+      //       results.innerHTML = 'ERROR!';
+      //     });;
+      // } else {
+      //   results.innerHTML = 'Nothing to upload.';
+      // }
+
+// after!
+      const bucketName = 'node-sdk-sample-' + uuid.v4();
+      const keyName = 'hello_world.txt';
+      const bucketPromise = new AWS.S3({apiVersion: '2006-03-01'}).createBucket({Bucket: bucketName}).promise();
+      bucketPromise.then(
+        function(data) {
+          const objectParams = {Bucket: bucketName, Key: keyName, Body: 'Hello World!'};
+          const uploadPromise = new AWS.S3({apiVersion: '2006-03-01'}).putObject(objectParams).promise();
+          uploadPromise.then(
+            function(data) {
+              console.log("Successfully uploaded data to " + bucketName + "/" + keyName);
+            });
+      }).catch(
+        function(err) {
+          console.error(err, err.stack);
+      });
     }
   },
   

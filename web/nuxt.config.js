@@ -56,7 +56,15 @@ export default {
   /*
    ** Nuxt.js modules
    */
-  modules: [],
+  modules: ['@nuxtjs/proxy'],
+  proxy: {
+    '/awss3': {
+      target: 'https://image.s3.amazonaws.com/',
+      // pathRewrite: {
+      //   '^/awss3' : '/'
+      //   }
+      }
+  },
   /*
    ** vuetify module configuration
    ** https://github.com/nuxt-community/vuetify-module
