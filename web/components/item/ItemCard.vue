@@ -62,19 +62,16 @@ export default {
 
   methods: {
     getImage() {
-      console.log("aaa", this.item.images[0])  //ココを重点的に調査！
+      let aaa = '';
+      // filter(reduce?)文を使うとよりスムーズ
        this.item.images.forEach((element, index) => {
-         if (index == 1) {
-          console.log("keke", element.url)
-          return element.url
+         if (index == 0) {
+          aaa = element.url
         }
        });
-      // return this.item.images[0]
+       return aaa;
     }
   },
 
-  mounted() {
-    console.log("item!", this.item)
-  }
 };
 </script>
