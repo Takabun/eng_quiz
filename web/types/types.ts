@@ -4,7 +4,8 @@ interface Tag {
 }
 
 interface Image {
-  url: string;
+  url: string,
+  name: string;
 }
 
 interface Question {
@@ -24,6 +25,7 @@ interface Raw_Tag {
 
 interface Raw_Image {
   Url: string;
+  Name: string;
 }
 
 interface Raw_Question {

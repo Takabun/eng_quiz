@@ -31,7 +31,7 @@ export const actions = actionTree({ state, getters, mutations }, {
         text: element.Text,
         default_image: element.DefaultImage,
         tags: element.Tags.map(obj => {const robj: Tag = {id: obj.ID, name: obj.Name}; return robj} ),
-        images: element.QuestionImages.map(obj => {const robj: Image = {url: obj.Url}; return robj} ),
+        images: element.QuestionImages.map(obj => {const robj: Image = {url: obj.Url, name: obj.Name}; return robj} ),
       }
       list.push(payload)
     });
