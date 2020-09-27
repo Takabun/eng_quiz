@@ -83,9 +83,9 @@
             <!-- 画像アップロード(Question) -->
             <div class="mb-3">
               <h3 class="mb-2">画像アップロード(Question)<small class="body-2 primary--text ml-1">＊</small></h3>
-              <input type="file" id="file-chooser" />
-              <button id="upload-button" @click="onCreateImage()">Upload to S3</button>
-              <div id="results"></div>
+              <input type="file" id="file-chooser-q" />
+              <button id="upload-button-q" @click="onCreateQuestionImage()">Upload to S3</button>
+              <div id="results-q"></div>
             </div>
 
             <!-- 答え -->
@@ -117,14 +117,16 @@
 </template>
 
 
-
 <script lang="ts">
 import Vue from "vue";
 import axios from "axios";
 import {Tag, Image, Question, Raw_Tag, Raw_Image, Raw_Question} from "../types/types";
 import secrets from "../_secret/aws_info"
 import AWS from "aws-sdk"
-import uuid from "uuid"
+// import uuid from "uuid"
+import {uuid} from "vue-uuid";
+
+const NAMESPACE = "65f9af5d-f23f-4065-ac85-da725569fdcd";
 
 export default Vue.extend({
   // head() {  // headを適用するにはexport default {}とする必要がある
@@ -152,6 +154,12 @@ export default Vue.extend({
         // AnswerImage: []
       },
       answerImages: [],
+      // NAMESPACE,
+      // uuid: uuid.v1(),
+      // v1: this.uuid.v1(),
+      // v3: this.uuid.v3(),
+      // v4: this.uuid.v4(),
+      // v5: this.uuid.v5("Name 2", NAMESPACE)
     }
   },
 
@@ -165,58 +173,45 @@ export default Vue.extend({
     },
 
     AddNewTag() {
-      this.newTags.push(this.newTagDraft)
-      this.newTagDraft = ''
+      if (this.newTagDraft !=="") {
+        this.newTags.push(this.newTagDraft)
+        this.newTagDraft = ''
+      }
     },
 
     getTags() {
       return this.$accessor.tags.tags
     },
 
-    onCreateImage() {
+    onCreateQuestionImage() {
       AWS.config.update({accessKeyId: secrets.accessKeyId, secretAccessKey: secrets.secretAccessKey});
       const bucket = new AWS.S3({params: {Bucket: secrets.Bucket}});
-      const fileChooser= <HTMLInputElement>document.getElementById('file-chooser');
-      const button = document.getElementById('upload-button');
-      const results = <HTMLElement>document.getElementById('results');
+      const fileChooser= <HTMLInputElement>document.getElementById('file-chooser-q');
+      const results = <HTMLElement>document.getElementById('results-q');
       const file = fileChooser.files![0]; //!の位置でハマった
       
-// before!
-      // if (file) {
-      //   results.innerHTML = '';
-      //   const params: any = {Key: file.name, ContentType: file.type, Body: file};  //before
-      //   // var params = {Key: file.name, Bucket: file.type, Body: file};  //後で確認 after
-
-      //   const uploadPromise = bucket.putObject(params).promise();
-      //   uploadPromise
-      //     .then(function(data) {
-      //       console.log("uploaded!", data);
-      //       results.innerHTML = 'UPLOADED';
-      //     })
-      //     .catch(function(err) {
-      //       console.error("error!", err, err.stack);
-      //       results.innerHTML = 'ERROR!';
-      //     });;
-      // } else {
-      //   results.innerHTML = 'Nothing to upload.';
-      // }
-
-// after!
-      const bucketName = 'node-sdk-sample-' + uuid.v4();
-      const keyName = 'hello_world.txt';
-      const bucketPromise = new AWS.S3({apiVersion: '2006-03-01'}).createBucket({Bucket: bucketName}).promise();
-      bucketPromise.then(
-        function(data) {
-          const objectParams = {Bucket: bucketName, Key: keyName, Body: 'Hello World!'};
-          const uploadPromise = new AWS.S3({apiVersion: '2006-03-01'}).putObject(objectParams).promise();
-          uploadPromise.then(
-            function(data) {
-              console.log("Successfully uploaded data to " + bucketName + "/" + keyName);
-            });
-      }).catch(
-        function(err) {
-          console.error(err, err.stack);
-      });
+      if (file) {
+        results.innerHTML = '';
+        const params: any = {Key: uuid.v4() + "-" + file.name, ContentType: file.type, Body: file};  //before
+        console.log("げげ", file)
+        // var params = {Key: file.name, Bucket: file.type, Body: file};  //これでは動かなかった
+        const uploadPromise = bucket.putObject(params).promise();
+        uploadPromise
+          .then(function(data) {
+            console.log("uploaded!", data.$response);  //key: .request.params.Key
+            results.innerHTML = 'UPLOADED!';
+          })
+          .catch(function(err) {
+            console.error("error!", err, err.stack);
+            results.innerHTML = 'ERROR!';
+          });;
+      } else {
+        results.innerHTML = 'Nothing to upload.';
+      }
+      // (もしもBucketにuuidを使用する場合はこちら)
+      // const bucketName = 'node-sdk-sample-' + uuid.v4();
+      // const bucketPromise = new AWS.S3({apiVersion: '2006-03-01'}).createBucket({Bucket: bucketName}).promise();
+      // bucketPromise.then(function(data) {
     }
   },
   

@@ -18,7 +18,8 @@
     "axios": "^0.19.2",
     "nuxt": "^2.13.0",
     "nuxt-typed-vuex": "^0.1.20",
-    "uuid": "^8.3.0"
+    "uuid": "^8.3.0",
+    "vue-uuid": "^2.0.2"
   },
   "devDependencies": {
     "@nuxt/types": "^2.14.4",
