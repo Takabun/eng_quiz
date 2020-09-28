@@ -7,11 +7,10 @@
                    class="pb-8"
                    >
         <div class="d-flex  flex-wrap">
-          <!-- style="overflow-x:scroll" -->
           <div v-for="item in getQuestions()" :key="item.id"
                class="ma-4">
              <item-card :item="item"
-                        :width="250"
+                        :width="$isMd() ? '250' : '80vw'"
                         elevation="2"
                         />
           </div>

@@ -1,5 +1,6 @@
 <template>
   <a>
+    <!-- :width="width" -->
   <v-card
     class="mx-auto"
     :width="width"
@@ -17,7 +18,7 @@
       <v-img
         class=""
         height="200px"
-        :src="`${getImage()}`"
+        :src="getFirstImage"
       />
 
     </div>
@@ -25,13 +26,17 @@
     <v-card-text class="text--primary">
       <div style="height: 45px;" class="overflow-x-hidden">{{item.text}}</div>
     </v-card-text>
+    <div class="tags-wrap">
     <v-card-actions>
-      <div v-for="item in item.tags" :key="item.Id" class="ma-1">
+      
+      <div v-for="item in item.tags" :key="item.Id" class="mr-2">
         <v-chip color="primary" >
           {{item.name}}
         </v-chip>
       </div>
+      
     </v-card-actions>
+    </div>
   </v-card>
   </a>
 </template>
@@ -48,10 +53,6 @@ export default {
       type: Number | String,
       default: null
     },
-    thumbWidth: {
-      type: Number | String,
-      default: 150
-    }
    },
 
    data() {
@@ -60,18 +61,25 @@ export default {
     }
    },
 
-  methods: {
-    getImage() {
+  computed: {
+    getFirstImage() {
       let aaa = '';
-      // filter(reduce?)文を使うとよりスムーズ
-       this.item.images.forEach((element, index) => {
-         if (index == 0) {
+      this.item.images.forEach((element, index) => {  // filter(reduce?)文を使うとよりスムーズ
+        if (index == 0) {
           aaa = element.url
         }
-       });
-       return aaa;
+      });
+      return aaa;
     }
   },
 
 };
 </script>
+
+<style scoped>
+.tags-wrap {
+  height: 48px !important;
+  width: 100% !important;
+  overflow-x: scroll !important;
+}
+</style>

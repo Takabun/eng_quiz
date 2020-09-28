@@ -8,4 +8,5 @@ Vue.use(Vuetify)
 
 export default (ctx, inject) => {
   inject('define', define)
+  inject('isMd', () => ctx.$vuetify.breakpoint.mdAndUp)
 }
