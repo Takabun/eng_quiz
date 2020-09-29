@@ -27,15 +27,15 @@
             <!-- 既存タグ選択 -->
             <div class="mb-3">
               <h3 class="mb-2">既存のタグから選択<small class="body-2 primary--text ml-1">＊</small></h3>
-                <div class="tags-wrap">
-              <v-chip-group >
-                  <v-chip 
-                    v-for="item in getTags()" 
-                    :key="item.id"
-                    @click="ApplyExistingTag(item)"
-                    :color="` ${question.Tags.indexOf(item) > -1 ? 'primary': 'blue lighten-5'}`"
-                  > {{item.name}}</v-chip>
-              </v-chip-group>
+              <div class="tags-wrap">
+                <v-chip-group >
+                    <v-chip 
+                      v-for="item in getTags()" 
+                      :key="item.id"
+                      @click="ApplyExistingTag(item)"
+                      :color="` ${question.Tags.indexOf(item) > -1 ? 'primary': 'blue lighten-5'}`"
+                    > {{item.name}}</v-chip>
+                </v-chip-group>
               </div>
             </div>
 
