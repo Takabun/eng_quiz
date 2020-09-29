@@ -1,6 +1,6 @@
 <template>
-  <v-layout column justify-center align-center>
-    <v-flex style="width: 100%">
+  <v-layout>
+    <v-flex >
       <div class="ma-6">
         <h3 class="mb-2">タグから絞り込み<small class="body-2 primary--text ml-1">＊</small></h3>
         <div class="tags-wrap">
@@ -15,26 +15,14 @@
         </div>
       </div>
       <v-container class="pb-8" >
-        <!-- <div class="d-flex  flex-wrap">
-          <div v-for="item in selecteditems" :key="item.id"
-               class="ma-4">
-            <item-card  :item="item"
-                        :width="$isMd() ? '250' : '80vw'"
-                        elevation="2"
-                      />
-          </div>
-        </div> -->
         <v-row>
           <v-col  md="3"
                   sm="12"
-                  v-for="item in selecteditems" :key="item.id"
-                  >
+                  v-for="item in selecteditems" :key="item.id">
             <item-card  :item="item"
                         elevation="2"
                       />
           </v-col>
-
-
         </v-row>
       </v-container>
     </v-flex>
