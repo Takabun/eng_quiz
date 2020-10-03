@@ -64,12 +64,10 @@ export default Vue.extend({
       } else {
         let array = [] as Question[]
         this.selectedTags.forEach((selectedtag: number) => { //各選択タグ
-          this.$accessor.questions.questions.filter(element => { //各クエスチョン(@Store)
-          const tagIDs = element.tags.map(tag => tag.id)  //各クエスチョンのタグIDの配列
-          if (tagIDs.indexOf(selectedtag) > -1 && array.indexOf(element) == -1) {
-            array.push(element)
-          }
-        })
+          this.$accessor.questions.questions.filter(q => { //各クエスチョン(@Store)
+            const qtagIDs = q.tags.map(tag => tag.id)  //各クエスチョンのタグIDの配列
+            if (qtagIDs.indexOf(selectedtag) > -1 && array.indexOf(q) == -1) { array.push(q) }
+          })
         });
         return array;
       }
