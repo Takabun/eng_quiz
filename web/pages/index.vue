@@ -21,6 +21,7 @@
                   v-for="item in selecteditems" :key="item.id">
             <item-card  :item="item"
                         elevation="2"
+                        @click="$router.push(`/items/${item.id}`)"
                       />
           </v-col>
         </v-row>
@@ -32,7 +33,7 @@
 <script lang="ts">
 import Vue from "vue";
 import axios from "axios";
-import ItemCard from '../components/item/ItemCard.vue'
+import ItemCard from '../components/items/ItemCard.vue'
 import {Tag, Image, Question, Raw_Tag, Raw_Image, Raw_Question} from "../types/types"
 
 export default Vue.extend({
