@@ -1,9 +1,9 @@
 <template>
-  <a>
     <!-- :width="width" -->
   <v-card
     class="mx-auto"
     :width="width"
+    @click="$router.push(`/question/${item.id}`)"
   >
 
     <div v-if='item.default_image !== 0'>
@@ -38,7 +38,6 @@
     </v-card-actions>
     </div>
   </v-card>
-  </a>
 </template>
 
 <script>
