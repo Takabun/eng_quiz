@@ -89,6 +89,7 @@ export default {
   },
 
   mounted() {
+    //@ts-ignore
     axios.get(`http://localhost:1323/question/${this.$route.params.id}`).then((res) => {
       console.log("res(question)", res)
       const payload = {
@@ -97,20 +98,23 @@ export default {
         user: res.data.User,
         text: res.data.Text,
         default_image: res.data.DefaultImage,
+        //@ts-ignore
         tags: res.data.Tags.map(obj => {const robj: Tag = {id: obj.ID, name: obj.Name}; return robj} ),
+        //@ts-ignore
         images: res.data.QuestionImages.map(obj => {const robj: Image = {url: obj.Url, name: obj.Name}; return robj} ),
-      }
+      }//@ts-ignore
       this.question = payload
     });
-
+    //@ts-ignore
     axios.get(`http://localhost:1323/answer/${this.$route.params.id}`).then((res) => {
       console.log("res(answer)", res)
       const payload = {
         id: res.data.ID,
         created_at: res.data.CreatedAt,
         text: res.data.Text,
+        //@ts-ignore
         images: res.data.AnswerImages.map(obj => {const robj: Image = {url: obj.Url, name: obj.Name}; return robj} ),
-      }
+      } //@ts-ignore
       this.answer = payload
     });
   }
