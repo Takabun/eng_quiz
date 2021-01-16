@@ -90,7 +90,7 @@ export default {
 
   mounted() {
     //@ts-ignore
-    axios.get(`http://localhost:1323/question/${this.$route.params.id}`).then((res) => {
+    axios.get(`${process.env.todoApiUrl}/question/${this.$route.params.id}`).then((res) => {
       console.log("res(question)", res)
       const payload = {
         id: res.data.ID,
@@ -106,7 +106,7 @@ export default {
       this.question = payload
     });
     //@ts-ignore
-    axios.get(`http://localhost:1323/answer/${this.$route.params.id}`).then((res) => {
+    axios.get(`${process.env.todoApiUrl}/answer/${this.$route.params.id}`).then((res) => {
       console.log("res(answer)", res)
       const payload = {
         id: res.data.ID,

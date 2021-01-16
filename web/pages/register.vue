@@ -204,7 +204,7 @@ export default Vue.extend({
         uploadPromise
           .then(function(data: any) {
             console.log("uploaded!", data.$response);  //key: .request.params.Key
-            axios.post(`http://localhost:1323/questionimage`, {
+            axios.post(`${process.env.todoApiUrl}/questionimage`, {
               QuestionId: qid,
               Name:  data.$response.request.params.Body.name,
               Url: "https://quiztest-kt.s3-ap-northeast-1.amazonaws.com/" + data.$response.request.params.Key
@@ -233,7 +233,7 @@ export default Vue.extend({
         uploadPromise
           .then(function(data: any) {
             console.log("uploaded!", data.$response);  //key: .request.params.Key
-            axios.post(`http://localhost:1323/answerimage`, {
+            axios.post(`${process.env.todoApiUrl}/answerimage`, {
               AnswerId: aid,
               Name:  data.$response.request.params.Body.name,
               Url: "https://quiztest-kt.s3-ap-northeast-1.amazonaws.com/" + data.$response.request.params.Key
@@ -278,12 +278,12 @@ export default Vue.extend({
 
     async CreatenewOne() {
       for (let i = 0; i < this.newTags.length ; i ++ ) {
-        const res = await axios.post(`http://localhost:1323/tag`, {Name: this.newTags[i]})
+        const res = await axios.post(`${process.env.todoApiUrl}/tag`, {Name: this.newTags[i]})
         this.question.Tags.push(res.data)
       };
-      const questionresponse = await axios.post(`http://localhost:1323/question`,this.question)
+      const questionresponse = await axios.post(`${process.env.todoApiUrl}/question`,this.question)
       const questionimageresponse = await this.onCreateQuestionImage(questionresponse.data.ID)
-      const answerresponse = await axios.post(`http://localhost:1323/answer`, {
+      const answerresponse = await axios.post(`${process.env.todoApiUrl}/answer`, {
         Text: this.answer.Text,
         QuestionId: questionresponse.data.ID
       })
