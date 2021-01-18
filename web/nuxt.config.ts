@@ -14,7 +14,8 @@ const nuxtConfig: NuxtConfig = {
    */
   target: "static",
   env: {
-    todoApiUrl: process.env.TODO_API_URL || 'http://localhost:1323'
+    // todoApiUrl: process.env.TODO_API_URL || 'http://localhost:1323'
+    todoApiUrl: process.env.TODO_API_URL ? `http://${process.env.TODO_API_URL}` : 'http://localhost:1323'
   },
 
   /*

@@ -20,8 +20,10 @@ export const mutations = mutationTree(state, {
 
 // 戻り値の型を明示的にしないとthis.app.$accessor経由でmutationsやactionsを呼び出そうとしたときに型推論が効かなくなってしまう
 export const actions = actionTree({ state, getters, mutations }, {
-    GetTags({ getters, commit }): void {
-      axios.get(`${process.env.todoApiUrl}/tags`).then((res) => {
+  GetTags({ getters, commit }): void {
+    console.log("is process.env.todoApiUrl?", process.env.todoApiUrl)
+    axios.get(`${process.env.todoApiUrl}/tags`).then((res) => {
+      console.log("tags get respose", res)
       let list: Tag[] = [];
       res.data.forEach((element: Raw_Tag) => {
         const payload = {

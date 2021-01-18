@@ -22,6 +22,7 @@ export const mutations = mutationTree(state, {
 export const actions = actionTree({ state, getters, mutations }, {
   GetQuestions({ getters, commit }): void {
     axios.get(`${process.env.todoApiUrl}/questions`).then((res) => {
+    console.log("questions get response", res)
     let list: Question[] = [];
     res.data.forEach((element: Raw_Question) => {
       const payload = {
