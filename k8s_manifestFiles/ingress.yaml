@@ -4,9 +4,9 @@ metadata:
   name: ingress
 spec:
   rules:
-  - http:
-      paths:
-      - path: /*
-        backend:
-          serviceName: todoweb 
-          servicePort: 80
+    - http:
+        paths:
+          - path: /*
+            backend:
+              serviceName: web
+              servicePort: 3000

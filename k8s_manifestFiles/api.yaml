@@ -1,0 +1,37 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: api
+  labels:
+    app: api
+spec:
+  selector:
+    app: api
+  ports:
+    - name: http
+      port: 1323
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api
+  labels:
+    app: api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: api
+  template:
+    metadata:
+      labels:
+        app: api
+    spec:
+      containers:
+        # Go言語で作ったAPI
+        - name: api
+          image: takabunn/eng_quiz_echo_image:latest # echo_image
+          imagePullPolicy: Always #Never
+          ports:
+            - containerPort: 1323
