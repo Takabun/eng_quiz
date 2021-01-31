@@ -35,3 +35,6 @@ spec:
           imagePullPolicy: Always #Never
           ports:
             - containerPort: 1323
+          env:
+            - name: "DB_URL"
+              value: "root:password@tcp(db:3306)/eng_quiz?parseTime=true&loc=Asia%2FTokyo"

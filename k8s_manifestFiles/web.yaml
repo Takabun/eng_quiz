@@ -50,7 +50,7 @@ spec:
             - name: TODO_API_URL
               # value: 10.3.255.103:1323 # エラーが出るまでに時間がかかる(が失敗)
               # value: api # → ERR_NAME_NOT_RESOLVED
-              value: api:1323 # → ERR_NAME_NOT_RESOLVED
+              value: http://api:1323 # → ERR_NAME_NOT_RESOLVED
               # value: "api:1323" #こっちはダメっぽい？
           # volumeMounts:
           #   - mountPath: /dist # ②nginx側の/var/www/_nuxtと、web側の/distをマウント。webの/distの内容を、nginx-nuxtへコピー
