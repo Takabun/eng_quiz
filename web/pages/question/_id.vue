@@ -88,35 +88,36 @@ export default {
     }
   },
 
-  mounted() {
+  async mounted() {
     //@ts-ignore
-    axios.get(`${process.env.todoApiUrl}/question/${this.$route.params.id}`).then((res) => {
-      console.log("res(question)", res)
-      const payload = {
-        id: res.data.ID,
-        created_at: res.data.CreatedAt,
-        user: res.data.User,
-        text: res.data.Text,
-        default_image: res.data.DefaultImage,
-        //@ts-ignore
-        tags: res.data.Tags.map(obj => {const robj: Tag = {id: obj.ID, name: obj.Name}; return robj} ),
-        //@ts-ignore
-        images: res.data.QuestionImages.map(obj => {const robj: Image = {url: obj.Url, name: obj.Name}; return robj} ),
-      }//@ts-ignore
-      this.question = payload
-    });
+    const q = await axios.get(`api/question/${this.$route.params.id}`, {id: this.$route.params.id})
+    console.log("res(question)", q)
     //@ts-ignore
-    axios.get(`${process.env.todoApiUrl}/answer/${this.$route.params.id}`).then((res) => {
-      console.log("res(answer)", res)
-      const payload = {
-        id: res.data.ID,
-        created_at: res.data.CreatedAt,
-        text: res.data.Text,
-        //@ts-ignore
-        images: res.data.AnswerImages.map(obj => {const robj: Image = {url: obj.Url, name: obj.Name}; return robj} ),
-      } //@ts-ignore
-      this.answer = payload
-    });
+    const payloadQ = {
+      id: q.data.ID,
+      created_at: q.data.CreatedAt,
+      user: q.data.User,
+      text: q.data.Text,
+      default_image: q.data.DefaultImage,
+      //@ts-ignore
+      tags: q.data.Tags.map(obj => {const robj: Tag = {id: obj.ID, name: obj.Name}; return robj} ),
+      //@ts-ignore
+      images: q.data.QuestionImages.map(obj => {const robj: Image = {url: obj.Url, name: obj.Name}; return robj} ),
+    }//@ts-ignore
+    this.question = payloadQ
+
+    // @ts-ignore
+    const a = await axios.get(`api/answer/${this.$route.params.id}`, {id: this.$route.params.id})
+    console.log("res(answer)", a)
+    //@ts-ignore
+    const payloadA = {
+      id: a.data.ID,
+      created_at: a.data.CreatedAt,
+      text: a.data.Text,
+      //@ts-ignore
+      images: a.data.AnswerImage.map(obj => {const robj: Image = {url: obj.Url, name: obj.Name}; return robj} ),
+    } //@ts-ignore
+    this.answer = payloadA
   }
 }
 </script>

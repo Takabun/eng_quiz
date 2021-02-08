@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "nuxt-ts",
+    "dev": "node server.js",
     "build": "nuxt-ts build",
-    "start": "nuxt-ts start",
+    "start": "node server.js",
     "export": "nuxt-ts export",
     "serve": "nuxt-ts serve",
     "test": "jest"

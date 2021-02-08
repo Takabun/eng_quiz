@@ -30,7 +30,7 @@
               <div class="tags-wrap">
                 <v-chip-group >
                     <v-chip 
-                      v-for="item in getTags()" 
+                      v-for="item in tags" 
                       :key="item.id"
                       @click="ApplyExistingTag(item)"
                       :color="` ${question.Tags.indexOf(item) > -1 ? 'primary': 'blue lighten-5'}`"
@@ -161,6 +161,7 @@ export default Vue.extend({
         DefaultImage: 0,
         // QuestionImages: [],
       },
+      tags:[] as Tag[],
       newTagDraft: '' as string,
       newTags: [] as string[],
       questionImages: [] as File[],
@@ -190,10 +191,6 @@ export default Vue.extend({
       }
     },
 
-    getTags() {
-      return this.$accessor.tags.tags
-    },
-
     onCreateQuestionImage(qid: number) {
       AWS.config.update({accessKeyId: secrets.accessKeyId, secretAccessKey: secrets.secretAccessKey});
       const bucket = new AWS.S3({params: {Bucket: secrets.Bucket}});
@@ -204,14 +201,13 @@ export default Vue.extend({
         uploadPromise
           .then(function(data: any) {
             console.log("uploaded!", data.$response);  //key: .request.params.Key
-            axios.post(`${process.env.todoApiUrl}/questionimage`, {
+            axios.post(`api/questionimage`, {
               QuestionId: qid,
               Name:  data.$response.request.params.Body.name,
               Url: "https://quiztest-kt.s3-ap-northeast-1.amazonaws.com/" + data.$response.request.params.Key
             }).then(function(res) {
               console.log("DBへのQuestionImage保存まで完了", res)
             })
-
           })
           .catch(function(err) {
             console.error("error!", err, err.stack);
@@ -233,7 +229,7 @@ export default Vue.extend({
         uploadPromise
           .then(function(data: any) {
             console.log("uploaded!", data.$response);  //key: .request.params.Key
-            axios.post(`${process.env.todoApiUrl}/answerimage`, {
+            axios.post(`api/answerimage`, {
               AnswerId: aid,
               Name:  data.$response.request.params.Body.name,
               Url: "https://quiztest-kt.s3-ap-northeast-1.amazonaws.com/" + data.$response.request.params.Key
@@ -278,12 +274,12 @@ export default Vue.extend({
 
     async CreatenewOne() {
       for (let i = 0; i < this.newTags.length ; i ++ ) {
-        const res = await axios.post(`${process.env.todoApiUrl}/tag`, {Name: this.newTags[i]})
+        const res = await axios.post(`api/tag`, { Name: this.newTags[i] })
         this.question.Tags.push(res.data)
       };
-      const questionresponse = await axios.post(`${process.env.todoApiUrl}/question`,this.question)
+      const questionresponse = await axios.post(`api/question`,this.question)
       const questionimageresponse = await this.onCreateQuestionImage(questionresponse.data.ID)
-      const answerresponse = await axios.post(`${process.env.todoApiUrl}/answer`, {
+      const answerresponse = await axios.post(`api/answer`, {
         Text: this.answer.Text,
         QuestionId: questionresponse.data.ID
       })
@@ -293,15 +289,23 @@ export default Vue.extend({
   
   computed: {
     isDisabled() {
-      // if (this.question.User !== "" && this.question.Text !=="" && this.answer.Text !==""
-      //   && (this.question.DefaultImage !== 0 || this.questionImages.length !== 0) ) return false;
-      // return true;
-      return false;
+      if (this.question.User !== "" && this.question.Text !=="" && this.answer.Text !==""
+        && (this.question.DefaultImage !== 0 || this.questionImages.length !== 0) ) return false;
+      return true;
     }
   },
   
-  mounted() {
-    this.$accessor.tags.GetTags();
+  async mounted() {
+    const resTags = await axios.get(`api/tags`)
+    let tlist: Tag[] = [];
+    resTags.data.forEach((element: Raw_Tag) => {
+      const payload = {
+        id: element.ID,
+        name: element.Name
+      }
+      tlist.push(payload)
+    });
+    this.tags = tlist
   }
 })
 </script>

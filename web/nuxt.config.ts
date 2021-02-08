@@ -1,18 +1,17 @@
-import colors from "vuetify/es5/util/colors";
+// import colors from "vuetify/es5/util/colors";
 // import { NuxtConfiguration }  from '@nuxt/config'
-import { NuxtConfig } from '@nuxt/types'
+// import { NuxtConfig } from '@nuxt/types'
 
-const nuxtConfig: NuxtConfig = {
+const nuxtConfig = {
   /*
    ** Nuxt rendering mode
    ** See https://nuxtjs.org/api/configuration-mode
    */
-  mode: "spa",
+  mode: "universal",
   /*
    ** Nuxt target
    ** See https://nuxtjs.org/api/configuration-target
    */
-  target: "static",
   env: {
     // todoApiUrl: process.env.TODO_API_URL || 'http://localhost:1323'
     todoApiUrl: process.env.TODO_API_URL ? `http://${process.env.TODO_API_URL}` : 'http://localhost:1323'
@@ -45,7 +44,8 @@ const nuxtConfig: NuxtConfig = {
    ** https://nuxtjs.org/guide/plugins
    */
   plugins: [
-    '~/plugins/index',
+    // '~/plugins/index',
+    { src: 'plugins/index', ssr: false }
   ],
   /*
    ** Auto import components
@@ -82,13 +82,20 @@ const nuxtConfig: NuxtConfig = {
       dark: false,
       themes: {
         dark: {
-          primary: colors.blue.darken2,
-          accent: colors.grey.darken3,
-          secondary: colors.amber.darken3,
-          info: colors.teal.lighten1,
-          warning: colors.amber.base,
-          error: colors.deepOrange.accent4,
-          success: colors.green.accent3
+          // primary: colors.blue.darken2,
+          // accent: colors.grey.darken3,
+          // secondary: colors.amber.darken3,
+          // info: colors.teal.lighten1,
+          // warning: colors.amber.base,
+          // error: colors.deepOrange.accent4,
+          // success: colors.green.accent3
+          primary: 'red',
+          accent: 'red',
+          secondary: 'red',
+          info: 'red',
+          warning: 'red',
+          error: 'red',
+          success: 'red'
         }
       }
     }
