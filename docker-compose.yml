@@ -23,7 +23,7 @@ services:
       # 左ホスト:右コンテナ
       - mysql_data:/var/lib/mysql #ここで .mysql_dataとすると、Data Volumeでなくホストに直で保存された
       # - ./sqls/init:/docker-entrypoint-initdb.d
-  # web:
+  # web: 今後はおそらく使わない(Dockerネットワーク内だとlocalhostで名前解決できないので)
   #   image: web_image
   #   container_name: web
   #   ports:
@@ -33,6 +33,6 @@ services:
   #     - /app/node_modules # Dockerfile内でyarn installしたnode_modulesを、そのまま残しておくため
   #     - ./web:/app # /web内のファイルを変更すれば、ホットリロードされる
   #   environment:
-  #     - TODO_API_URL=http://127.0.0.1:1323/
+  #     - TODO_API_URL=http://localhost:1323/
 volumes:
   mysql_data: # ローカルのディレクトリにデータを保存

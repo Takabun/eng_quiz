@@ -1,0 +1,37 @@
+{
+  "name": "web",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "node server.js",
+    "build": "nuxt-ts build",
+    "start": "node server.js",
+    "export": "nuxt-ts export",
+    "serve": "nuxt-ts serve",
+    "test": "jest"
+  },
+  "dependencies": {
+    "@nuxt/typescript-runtime": "^1.0.0",
+    "@nuxtjs/proxy": "^2.0.1",
+    "@types/uuid": "^8.3.0",
+    "array-foreach-async": "^1.0.1",
+    "aws-sdk": "^2.760.0",
+    "axios": "^0.19.2",
+    "nuxt": "^2.13.0",
+    "nuxt-typed-vuex": "^0.1.20",
+    "ts-loader": "^8.0.11",
+    "ts-node": "^9.1.0",
+    "uuid": "^8.3.0",
+    "vue-uuid": "^2.0.2"
+  },
+  "devDependencies": {
+    "@nuxt/types": "^2.14.4",
+    "@nuxt/typescript-build": "^2.0.2",
+    "@nuxtjs/vuetify": "^1.11.2",
+    "@vue/test-utils": "^1.0.3",
+    "babel-core": "7.0.0-bridge.0",
+    "babel-jest": "^26.0.1",
+    "jest": "^26.0.1",
+    "vue-jest": "^3.0.4"
+  }
+}
