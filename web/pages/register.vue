@@ -293,18 +293,6 @@ export default Vue.extend({
     }
   },
   
-  async mounted() {
-    // const resTags = await axios.get(`api/tags`)
-    // let tlist: Tag[] = [];
-    // resTags.data.forEach((element: Raw_Tag) => {
-    //   const payload = {
-    //     id: element.ID,
-    //     name: element.Name
-    //   }
-    //   tlist.push(payload)
-    // });
-    // this.tags = tlist
-  }
 })
 </script>
 <style scoped>
