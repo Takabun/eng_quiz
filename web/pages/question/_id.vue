@@ -89,34 +89,27 @@ export default {
   },
 
   async mounted() {
-    //@ts-ignore
     const q = await axios.get(`api/question/${this.$route.params.id}`, {id: this.$route.params.id})
     console.log("res(question)", q)
-    //@ts-ignore
     const payloadQ = {
       id: q.data.ID,
       created_at: q.data.CreatedAt,
       user: q.data.User,
       text: q.data.Text,
       default_image: q.data.DefaultImage,
-      //@ts-ignore
       tags: q.data.Tags.map(obj => {const robj: Tag = {id: obj.ID, name: obj.Name}; return robj} ),
-      //@ts-ignore
       images: q.data.QuestionImages.map(obj => {const robj: Image = {url: obj.Url, name: obj.Name}; return robj} ),
-    }//@ts-ignore
+    }
     this.question = payloadQ
 
-    // @ts-ignore
     const a = await axios.get(`api/answer/${this.$route.params.id}`, {id: this.$route.params.id})
     console.log("res(answer)", a)
-    //@ts-ignore
     const payloadA = {
       id: a.data.ID,
       created_at: a.data.CreatedAt,
       text: a.data.Text,
-      //@ts-ignore
       images: a.data.AnswerImage.map(obj => {const robj: Image = {url: obj.Url, name: obj.Name}; return robj} ),
-    } //@ts-ignore
+    } 
     this.answer = payloadA
   }
 }

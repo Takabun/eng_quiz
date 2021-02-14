@@ -35,11 +35,8 @@ import Vue from "vue";
 import axios from "axios";
 import ItemCard from '../components/items/ItemCard.vue'
 import {Tag, Image, Question, Raw_Tag, Raw_Image, Raw_Question} from "../types/types"
-// import vuex from 'vuex'
-// Vue.use(vuex)
 
 export default Vue.extend({
-  // Vue.extendがあるおかげで型推論が効くようになる
   components: {
     ItemCard
   },
@@ -68,9 +65,9 @@ export default Vue.extend({
         return this.items
       } else {
         let array = [] as Question[]
-        this.selectedTags.forEach((selectedtag: number) => { //各選択タグ
-          this.items.filter(q => { //各クエスチョン(@Store)
-            const qtagIDs = q.tags.map(tag => tag.id)  //各クエスチョンのタグIDの配列
+        this.selectedTags.forEach((selectedtag: number) => { 
+          this.items.filter(q => { 
+            const qtagIDs = q.tags.map(tag => tag.id) 
             if (qtagIDs.indexOf(selectedtag) > -1 && array.indexOf(q) == -1) { array.push(q) }
           })
         });

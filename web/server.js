@@ -13,7 +13,6 @@ if (!apiUrl) {
 console.log(`TODO_API_URL=${apiUrl}`)
 
 
-
 app.get('/api/questions', (req, res) => {
   axios.get(`${apiUrl}/questions`)
     .then(resp => {
@@ -62,7 +61,7 @@ app.get('/api/tags', (req, res) => {
 
 // ここからPOST
 app.post('/api/tag', (req, res) => {
-  // res.send(200).json(req.body)  //reqの中身を確認
+  // res.send(200).json(req.body)  //check content of req
 
   const param = {
     Name: req.body.Name
@@ -125,8 +124,6 @@ app.post('/api/answerimage', (req, res) => {
       res.send({ err })
     })
 })
-
-
 
 
 let config = require('./nuxt.config.ts')

@@ -17,12 +17,12 @@ type Question struct {
 	User string
 	Text string 
 	DefaultImage int
-	// UserID int
-	// User User  // `gorm:"foreignkey:UserID"`なくてもイケる
+	UserID int
+	User User  // `gorm:"foreignkey:UserID"`なくてもイケる
 	Tags []Tag  `gorm:"many2many:question_tags;"`
 	QuestionImages []QuestionImage
-	// Answer Answer
-	// Comments []Comment	
+	Answer Answer
+	Comments []Comment	
 }
 
 type QuestionImage struct {
@@ -36,7 +36,7 @@ type Answer struct {
 	gorm.Model
 	Text string
 	QuestionID int
-	// Question Question  //不要。(指定のQuestionのページにしか現れないと分かっているので)
+	Question Question  //不要。(指定のQuestionのページにしか現れないと分かっているので)
 	AnswerImage []AnswerImage
 }
 
@@ -47,13 +47,13 @@ type AnswerImage struct {
 	Name string
 }
 
-// type User struct {
-// 	gorm.Model
-// 	Name string
-// 	Email string
-// 	Password string
-// 	Questions []Question  //[]Questionとすると(スライス)動く
-// }
+type User struct {
+	gorm.Model
+	Name string
+	Email string
+	Password string
+	Questions []Question  //[]Questionとすると(スライス)動く
+}
 
 type Tag struct {
 	gorm.Model
@@ -66,15 +66,15 @@ type Comment struct {
 	User string
 	Text string
 	QuestionID int //実際はたぶん使わない
-	// UserID int
-	// User User // 動作しない`gorm:"foreignkey:UserID"`
+	UserID int
+	User User // 動作しない`gorm:"foreignkey:UserID"`
 	
 }
 
-// type Mylist struct {
-// 	gorm.Model
-// 	UserID int
-// 	QuestionID int
-// 	User User
-// 	Question Question
-// }
+type Mylist struct {
+	gorm.Model
+	UserID int
+	QuestionID int
+	User User
+	Question Question
+}

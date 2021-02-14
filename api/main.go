@@ -8,10 +8,10 @@ import (
 
 func main() {
   e := echo.New()
-  e.Use(middleware.Logger())  // ログ
+  e.Use(middleware.Logger())
   e.Use(middleware.Recover())
-  e.Use(middleware.CORS()) // CORS対策
-  initRouting(e) // ルーティング
+  e.Use(middleware.CORS()) 
+  initRouting(e)
 }
 
 func initRouting(e *echo.Echo) {
@@ -21,11 +21,11 @@ func initRouting(e *echo.Echo) {
   e.PUT("/question/:id", handler.UpdateQuestion)
   e.DELETE("/question/:id", handler.DeleteQuestion)
 
-  // e.GET("/users", handler.GetAllUsers)
-  // e.GET("/user/:id", handler.GetUser)
-  // e.POST("/user", handler.CreateUser)
-  // e.PUT("/user/:id", handler.UpdateUser)
-  // e.DELETE("/user/:id", handler.DeleteUser)
+  e.GET("/users", handler.GetAllUsers)
+  e.GET("/user/:id", handler.GetUser)
+  e.POST("/user", handler.CreateUser)
+  e.PUT("/user/:id", handler.UpdateUser)
+  e.DELETE("/user/:id", handler.DeleteUser)
 
   e.GET("/comments", handler.GetAllComments)
   e.GET("/comment/:id", handler.GetComment)  // :idはCommentのIDではなくQuestionのID

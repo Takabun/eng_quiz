@@ -144,14 +144,6 @@ interface HTMLElementEvent<T extends HTMLElement> extends Event {
 }
 
 export default Vue.extend({
-  // head() {  // headを適用するにはexport default {}とする必要がある
-  //   return {
-  //     script: [
-  //       { src:'https://sdk.amazonaws.com/js/aws-sdk-2.0.0-rc1.min.js' }
-  //     ]
-  //   }
-  // },
-
   data() {
     return {
       question: {
@@ -159,7 +151,6 @@ export default Vue.extend({
         Text: "",
         Tags: [] as Tag[],
         DefaultImage: 0,
-        // QuestionImages: [],
       },
       tags:[] as Tag[],
       newTagDraft: '' as string,
@@ -167,7 +158,6 @@ export default Vue.extend({
       questionImages: [] as File[],
       answer: {
         Text: "",
-        // AnswerImage: []
       },
       answerImages: [] as File[],
       questionImagePreview: '',
@@ -195,12 +185,11 @@ export default Vue.extend({
       AWS.config.update({accessKeyId: secrets.accessKeyId, secretAccessKey: secrets.secretAccessKey});
       const bucket = new AWS.S3({params: {Bucket: secrets.Bucket}});
       if (this.questionImages[0]) {
-        const params: any = {Key: uuid.v4() + "-" + this.questionImages[0].name, ContentType: this.questionImages[0].type, Body: this.questionImages[0]};  //before
-        // var params = {Key: file.name, Bucket: file.type, Body: file};  //これでは動かなかった
+        const params: any = {Key: uuid.v4() + "-" + this.questionImages[0].name, ContentType: this.questionImages[0].type, Body: this.questionImages[0]}; 
         const uploadPromise = bucket.putObject(params).promise();
         uploadPromise
           .then(function(data: any) {
-            console.log("uploaded!", data.$response);  //key: .request.params.Key
+            console.log("uploaded!", data.$response);  
             axios.post(`api/questionimage`, {
               QuestionId: qid,
               Name:  data.$response.request.params.Body.name,
@@ -213,22 +202,17 @@ export default Vue.extend({
             console.error("error!", err, err.stack);
           });;
       }
-      // (もしもBucketにuuidを使用する場合はこちら)
-      // const bucketName = 'node-sdk-sample-' + uuid.v4();
-      // const bucketPromise = new AWS.S3({apiVersion: '2006-03-01'}).createBucket({Bucket: bucketName}).promise();
-      // bucketPromise.then(function(data) {
     },
 
     onCreateAnswerImage(aid: number) {
       AWS.config.update({accessKeyId: secrets.accessKeyId, secretAccessKey: secrets.secretAccessKey});
       const bucket = new AWS.S3({params: {Bucket: secrets.Bucket}});
       if (this.answerImages[0]) {
-        const params: any = {Key: uuid.v4() + "-" + this.answerImages[0].name, ContentType: this.answerImages[0].type, Body: this.answerImages[0]};  //before
-        // var params = {Key: file.name, Bucket: file.type, Body: file};  //これでは動かなかった
+        const params: any = {Key: uuid.v4() + "-" + this.answerImages[0].name, ContentType: this.answerImages[0].type, Body: this.answerImages[0]};
         const uploadPromise = bucket.putObject(params).promise();
         uploadPromise
           .then(function(data: any) {
-            console.log("uploaded!", data.$response);  //key: .request.params.Key
+            console.log("uploaded!", data.$response); 
             axios.post(`api/answerimage`, {
               AnswerId: aid,
               Name:  data.$response.request.params.Body.name,
@@ -245,9 +229,9 @@ export default Vue.extend({
     },
 
     onQuestionImageChange(e: HTMLElementEvent<HTMLInputElement>) {
-      const images = e.target.files // || e.dataTransfer.files
+      const images = e.target.files 
       this.question.DefaultImage = 0;
-      this.questionImages = []  // 今は画像1件のみしか対応していないのでこれで前の要素削除
+      this.questionImages = []  
       this.questionImages.push(images![0])
       this.getBase64(this.questionImages[0])
         .then((image: unknown | string) => typeof image == "string" ? this.questionImagePreview = image : '')
@@ -255,7 +239,7 @@ export default Vue.extend({
     },
 
     onAnswerImageChange(e: HTMLElementEvent<HTMLInputElement>) {
-      const images = e.target.files // || e.dataTransfer.files
+      const images = e.target.files 
       this.answerImages = []
       this.answerImages.push(images![0])
       this.getBase64(this.answerImages[0])

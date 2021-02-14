@@ -18,7 +18,6 @@ export const mutations = mutationTree(state, {
   }
 });
 
-// 戻り値の型を明示的にしないとthis.app.$accessor経由でmutationsやactionsを呼び出そうとしたときに型推論が効かなくなってしまう
 export const actions = actionTree({ state, getters, mutations }, {
   GetTags({ getters, commit }): void {
     console.log("is process.env.todoApiUrl?", process.env.todoApiUrl)

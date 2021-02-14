@@ -16,7 +16,3 @@ export const accessorType = getAccessorType({
     questions
   }
 });
-
-// サブモジュールを読み込む際、これらを反映する事でうまく行った！
-// ①state = () => ({})へと変更
-// ②mutationTree, actionTreeを使う

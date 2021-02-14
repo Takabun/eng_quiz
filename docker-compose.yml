@@ -1,28 +1,23 @@
 version: "3"
 services:
   api:
-    # build: . # docker-compose.ymlはgo/直下に置いてるので、ディレクトリでビルドする
     image: echo_image
     container_name: api
     ports:
       - 1323:1323
-    depends_on: # dbコンテナに接続。ビルドするのもdbコンテナが立ち上がってからになる
+    depends_on:
       - db
   db:
     image: db_image
     container_name: db
     ports:
-      - 4306:3306 #sequel proで接続する関係から4306にしている
+      - 4306:3306
     environment:
       MYSQL_ROOT_PASSWORD: password
-      MYSQL_DATABASE: eng_quiz # go_trial
-      # MYSQL_USER: user
-      # MYSQL_PASSWORD: password
+      MYSQL_DATABASE: eng_quiz
       TZ: "Asia/Tokyo"
     volumes:
-      # 左ホスト:右コンテナ
-      - mysql_data:/var/lib/mysql #ここで .mysql_dataとすると、Data Volumeでなくホストに直で保存された
-      # - ./sqls/init:/docker-entrypoint-initdb.d
+      - mysql_data:/var/lib/mysql
   # web: 今後はおそらく使わない(Dockerネットワーク内だとlocalhostで名前解決できないので)
   #   image: web_image
   #   container_name: web
@@ -35,4 +30,4 @@ services:
   #   environment:
   #     - TODO_API_URL=http://localhost:1323/
 volumes:
-  mysql_data: # ローカルのディレクトリにデータを保存
+  mysql_data:
