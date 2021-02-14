@@ -41,12 +41,34 @@ export default Vue.extend({
     ItemCard
   },
 
-  data() {
-    return {
-      items: [] as Question[],
-      tags: [] as Tag[],
-      selectedTags: [] as number[]
-    };
+  async asyncData({axios}) {
+   const resTags = await axios.get(`api/tags`)
+    console.log("tags get response", resTags)
+    const tags: Tag[] = [];
+    resTags.data.forEach((element: Raw_Tag) => {
+      const payload = {
+        id: element.ID,
+        name: element.Name
+      }
+      tags.push(payload)
+    });
+
+    const resQ = await axios.get(`api/questions`)
+    console.log("questions get response", resQ)
+    const items: Question[] = [];
+    resQ.data.forEach((element: Raw_Question) => {
+      const payload = {
+        id: element.ID,
+        created_at: element.CreatedAt,
+        user: element.User,
+        text: element.Text,
+        default_image: element.DefaultImage,
+        tags: element.Tags.map(obj => {const robj: Tag = {id: obj.ID, name: obj.Name}; return robj} ),
+        images: element.QuestionImages.map(obj => {const robj: Image = {url: obj.Url, name: obj.Name}; return robj} ),
+      }
+      items.push(payload)
+    });
+    return { tags, items, selectedTags: [] }
   },
 
   methods: {
@@ -77,36 +99,5 @@ export default Vue.extend({
     }
   },
 
-  async mounted() {
-    const resTags = await axios.get(`api/tags`)
-    console.log("tags get response", resTags)
-    let tlist: Tag[] = [];
-    resTags.data.forEach((element: Raw_Tag) => {
-      const payload = {
-        id: element.ID,
-        name: element.Name
-      }
-      tlist.push(payload)
-    });
-    this.tags = tlist
-
-    const resQ = await axios.get(`api/questions`)
-    console.log("questions get response", resQ)
-    let qlist: Question[] = [];
-    resQ.data.forEach((element: Raw_Question) => {
-      const payload = {
-        id: element.ID,
-        created_at: element.CreatedAt,
-        user: element.User,
-        text: element.Text,
-        default_image: element.DefaultImage,
-        tags: element.Tags.map(obj => {const robj: Tag = {id: obj.ID, name: obj.Name}; return robj} ),
-        images: element.QuestionImages.map(obj => {const robj: Image = {url: obj.Url, name: obj.Name}; return robj} ),
-      }
-      qlist.push(payload)
-    });
-    this.items = qlist
-
-  }
 });
 </script>

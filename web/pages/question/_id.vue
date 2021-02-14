@@ -81,17 +81,10 @@ import {Tag, Image, Question, Raw_Tag, Raw_Image, Raw_Question} from "../../type
 
 export default {
 
-  data() {
-    return {
-      question: {},
-      answer: {}
-    }
-  },
-
-  async mounted() {
+  async asyncData({axios}) {
     const q = await axios.get(`api/question/${this.$route.params.id}`, {id: this.$route.params.id})
     console.log("res(question)", q)
-    const payloadQ = {
+    const question = {
       id: q.data.ID,
       created_at: q.data.CreatedAt,
       user: q.data.User,
@@ -100,17 +93,16 @@ export default {
       tags: q.data.Tags.map(obj => {const robj: Tag = {id: obj.ID, name: obj.Name}; return robj} ),
       images: q.data.QuestionImages.map(obj => {const robj: Image = {url: obj.Url, name: obj.Name}; return robj} ),
     }
-    this.question = payloadQ
 
     const a = await axios.get(`api/answer/${this.$route.params.id}`, {id: this.$route.params.id})
     console.log("res(answer)", a)
-    const payloadA = {
+    const answer = {
       id: a.data.ID,
       created_at: a.data.CreatedAt,
       text: a.data.Text,
       images: a.data.AnswerImage.map(obj => {const robj: Image = {url: obj.Url, name: obj.Name}; return robj} ),
     } 
-    this.answer = payloadA
+    return {question, answer}
   }
 }
 </script>

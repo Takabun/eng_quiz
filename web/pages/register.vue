@@ -144,6 +144,21 @@ interface HTMLElementEvent<T extends HTMLElement> extends Event {
 }
 
 export default Vue.extend({
+
+  async asyncData ({axios}) {
+    const resTags = await axios.get(`api/tags`)
+    let tags: Tag[] = [];
+    resTags.data.forEach((element: Raw_Tag) => {
+      const payload = {
+        id: element.ID,
+        name: element.Name
+      }
+      tags.push(payload)
+    });
+    return {
+      tags
+    }
+  },
   data() {
     return {
       question: {
@@ -152,7 +167,6 @@ export default Vue.extend({
         Tags: [] as Tag[],
         DefaultImage: 0,
       },
-      tags:[] as Tag[],
       newTagDraft: '' as string,
       newTags: [] as string[],
       questionImages: [] as File[],
@@ -280,16 +294,16 @@ export default Vue.extend({
   },
   
   async mounted() {
-    const resTags = await axios.get(`api/tags`)
-    let tlist: Tag[] = [];
-    resTags.data.forEach((element: Raw_Tag) => {
-      const payload = {
-        id: element.ID,
-        name: element.Name
-      }
-      tlist.push(payload)
-    });
-    this.tags = tlist
+    // const resTags = await axios.get(`api/tags`)
+    // let tlist: Tag[] = [];
+    // resTags.data.forEach((element: Raw_Tag) => {
+    //   const payload = {
+    //     id: element.ID,
+    //     name: element.Name
+    //   }
+    //   tlist.push(payload)
+    // });
+    // this.tags = tlist
   }
 })
 </script>
