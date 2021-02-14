@@ -8,5 +8,5 @@ spec:
         paths:
           - path: /*
             backend:
-              serviceName: web
+              serviceName: web-svc
               servicePort: 3000
