@@ -44,7 +44,8 @@ const nuxtConfig = {
    ** https://nuxtjs.org/guide/plugins
    */
   plugins: [
-    { src: 'plugins/index', ssr: false }
+    { src: 'plugins/index', ssr: false },
+    { src: 'plugins/APICall', ssr: false }
   ],
   /*
    ** Auto import components

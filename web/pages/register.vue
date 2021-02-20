@@ -145,7 +145,7 @@ interface HTMLElementEvent<T extends HTMLElement> extends Event {
 
 export default Vue.extend({
 
-  async asyncData ({axios}) {
+  async asyncData () {
     const resTags = await axios.get(`api/tags`)
     let tags: Tag[] = [];
     resTags.data.forEach((element: Raw_Tag) => {
@@ -195,51 +195,8 @@ export default Vue.extend({
       }
     },
 
-    onCreateQuestionImage(qid: number) {
-      AWS.config.update({accessKeyId: secrets.accessKeyId, secretAccessKey: secrets.secretAccessKey});
-      const bucket = new AWS.S3({params: {Bucket: secrets.Bucket}});
-      if (this.questionImages[0]) {
-        const params: any = {Key: uuid.v4() + "-" + this.questionImages[0].name, ContentType: this.questionImages[0].type, Body: this.questionImages[0]}; 
-        const uploadPromise = bucket.putObject(params).promise();
-        uploadPromise
-          .then(function(data: any) {
-            console.log("uploaded!", data.$response);  
-            axios.post(`api/questionimage`, {
-              QuestionId: qid,
-              Name:  data.$response.request.params.Body.name,
-              Url: "https://quiztest-kt.s3-ap-northeast-1.amazonaws.com/" + data.$response.request.params.Key
-            }).then(function(res) {
-              console.log("DBへのQuestionImage保存まで完了", res)
-            })
-          })
-          .catch(function(err) {
-            console.error("error!", err, err.stack);
-          });;
-      }
-    },
-
-    onCreateAnswerImage(aid: number) {
-      AWS.config.update({accessKeyId: secrets.accessKeyId, secretAccessKey: secrets.secretAccessKey});
-      const bucket = new AWS.S3({params: {Bucket: secrets.Bucket}});
-      if (this.answerImages[0]) {
-        const params: any = {Key: uuid.v4() + "-" + this.answerImages[0].name, ContentType: this.answerImages[0].type, Body: this.answerImages[0]};
-        const uploadPromise = bucket.putObject(params).promise();
-        uploadPromise
-          .then(function(data: any) {
-            console.log("uploaded!", data.$response); 
-            axios.post(`api/answerimage`, {
-              AnswerId: aid,
-              Name:  data.$response.request.params.Body.name,
-              Url: "https://quiztest-kt.s3-ap-northeast-1.amazonaws.com/" + data.$response.request.params.Key
-            }).then(function(res) {
-              console.log("DBへのAnswerImage保存まで完了", res)
-            })
-
-          })
-          .catch(function(err) {
-            console.error("error!", err, err.stack);
-          });;
-      }
+    CreatenewOne() {
+      this.APICreatenewOne(this.newTags, this.question,this.answer, this.questionImages, this.answerImages)
     },
 
     onQuestionImageChange(e: HTMLElementEvent<HTMLInputElement>) {
@@ -270,19 +227,6 @@ export default Vue.extend({
       })
     },
 
-    async CreatenewOne() {
-      for (let i = 0; i < this.newTags.length ; i ++ ) {
-        const res = await axios.post(`api/tag`, { Name: this.newTags[i] })
-        this.question.Tags.push(res.data)
-      };
-      const questionresponse = await axios.post(`api/question`,this.question)
-      const questionimageresponse = await this.onCreateQuestionImage(questionresponse.data.ID)
-      const answerresponse = await axios.post(`api/answer`, {
-        Text: this.answer.Text,
-        QuestionId: questionresponse.data.ID
-      })
-      const answerimageresponse = await this.onCreateAnswerImage(answerresponse.data.ID)
-    },
   },
   
   computed: {
